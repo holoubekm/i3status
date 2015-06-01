@@ -71,9 +71,12 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         int ivolume = DECOMPOSE_VOLUME(cvolume);
         bool muted = DECOMPOSE_MUTED(cvolume);
         if (muted) {
-            START_COLOR("color_degraded");
+            START_COLOR("color_alsa");
             pbval = 0;
         }
+        else
+            START_COLOR("color_good");
+
         /* negative result means error, stick to 0 */
         if (ivolume < 0)
             ivolume = 0;
@@ -88,9 +91,12 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         bool muted = DECOMPOSE_MUTED(cvolume);
         if (ivolume >= 0) {
             if (muted) {
-                START_COLOR("color_degraded");
+                START_COLOR("color_bad");
                 pbval = 0;
             }
+            else
+                START_COLOR("color_good");
+
             outwalk = apply_volume_format(muted ? fmt_muted : fmt,
                                           outwalk,
                                           ivolume);

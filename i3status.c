@@ -92,6 +92,9 @@ void fatalsig(int signum) {
  *
  */
 void sigusr1(int signum) {
+    pthread_mutex_lock(&i3status_sleep_mutex);
+    pthread_cond_broadcast(&i3status_sleep_cond);
+    pthread_mutex_unlock(&i3status_sleep_mutex);
 }
 
 /*
