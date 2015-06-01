@@ -16,8 +16,10 @@ CFLAGS+=-Wall -Wshadow -Wpointer-arith -Wcast-qual -Wsign-compare
 CFLAGS+=-g
 CFLAGS+=-std=gnu99
 CFLAGS+=-pedantic
-CPPFLAGS+=-DSYSCONFDIR=\"$(SYSCONFDIR)\"
+CPPFLAGS+=-DSYSCONFDIR=\"$(SYSCONFDIR)\" 
+CPPFLAGS+=-lstdc++ 
 CPPFLAGS+=-DVERSION=\"${GIT_VERSION}\"
+CPPFLAGS+=-Iinclude
 CFLAGS+=-Iinclude
 LIBS+=-lconfuse
 LIBS+=-lyajl
@@ -69,8 +71,23 @@ CFLAGS+=$(EXTRA_CFLAGS)
 # YAJL_MAJOR from that file to decide which code path should be used.
 CFLAGS += -idirafter yajl-fallback
 
-OBJS:=$(wildcard src/*.c *.c)
-OBJS:=$(OBJS:.c=.o)
+COBJS:=$(wildcard src/*.c *.c)
+COBJS:=$(COBJS:.c=.o)
+CPPFILES:=$(wildcard src/*.cpp)
+CPPOBJS:=$(CPPFILES:.cpp=.o)
+CPPXS:=$(CPPFILES:.cpp=.x)
+
+all: i3status manpage
+
+i3status:  ${COBJS} ${CPPXS}
+	g++ $(LDFLAGS) -o $@  $(COBJS) $(CPPOBJS) $(LIBS) -lX11
+	@echo " LD $@"
+
+src/%.x: src/%.cpp include/i3status.h
+	g++ $(CPPFLAGS) -c -o $@ $<
+	cp $@ $(@:.x=.o)
+	@echo " CC $<"
+
 
 src/%.o: src/%.c include/i3status.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
@@ -80,14 +97,11 @@ src/%.o: src/%.c include/i3status.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 	@echo " CC $<"
 
-all: i3status manpage
 
-i3status: ${OBJS}
-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
-	@echo " LD $@"
+
 
 clean:
-	rm -f *.o src/*.o
+	rm -f *.o *.x src/*.o src/*.x 
 
 distclean: clean
 	rm -f i3status man/i3status.1

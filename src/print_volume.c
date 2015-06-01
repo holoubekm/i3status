@@ -155,7 +155,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
     snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
 
     snd_mixer_handle_events(m);
-    snd_mixer_selem_get_playback_volume(elem, 0, &val);
+    snd_mixer_selem_get_playback_volume(elem, (snd_mixer_selem_channel_id_t)0, &val);
     if (max != 100) {
         float avgf = ((float)val / max) * 100;
         avg = (int)avgf;
@@ -165,11 +165,15 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
 
     /* Check for mute */
     if (snd_mixer_selem_has_playback_switch(elem)) {
-        if ((err = snd_mixer_selem_get_playback_switch(elem, 0, &pbval)) < 0)
+        if ((err = snd_mixer_selem_get_playback_switch(elem, (snd_mixer_selem_channel_id_t)0, &pbval)) < 0)
             fprintf(stderr, "i3status: ALSA: playback_switch: %s\n", snd_strerror(err));
         if (!pbval) {
-            START_COLOR("color_degraded");
+            START_COLOR("color_bad");
             fmt = fmt_muted;
+        }
+        else
+        {
+            START_COLOR("color_good");
         }
     }
 
@@ -208,8 +212,12 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
     }
 
     if (((vol & 0x7f) == 0) && (((vol >> 8) & 0x7f) == 0)) {
-        START_COLOR("color_degraded");
+        START_COLOR("color_bad");
         pbval = 0;
+    }
+    else
+    {
+        START_COLOR("color_good");
     }
 
     outwalk = apply_volume_format(fmt, outwalk, vol & 0x7f);
@@ -218,7 +226,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
 
 out:
     *outwalk = '\0';
-    if (!pbval)
+    // if (!pbval)
         END_COLOR;
     OUTPUT_FULL_TEXT(buffer);
 }

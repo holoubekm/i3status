@@ -34,6 +34,15 @@
 
 #include "i3status.h"
 
+
+enum eoutput_format output_format;
+
+
+void print_kbd_info(yajl_gen json_gen, char *buffer);
+void print_connection(yajl_gen json_gen, char *buffer);
+void print_brightness(yajl_gen json_gen, char *buffer);
+
+
 #define exit_if_null(pointer, ...) \
     {                              \
         if (pointer == NULL)       \
@@ -43,12 +52,13 @@
 #define CFG_CUSTOM_ALIGN_OPT \
     CFG_STR_CB("align", NULL, CFGF_NONE, parse_align)
 
-#define CFG_COLOR_OPTS(good, degraded, bad)             \
+#define CFG_COLOR_OPTS(good, degraded, bad, magic)             \
     CFG_STR("color_good", good, CFGF_NONE),             \
         CFG_STR("color_degraded", degraded, CFGF_NONE), \
-        CFG_STR("color_bad", bad, CFGF_NONE)
+        CFG_STR("color_bad", bad, CFGF_NONE), \
+        CFG_STR("color_magic", magic, CFGF_NONE)
 
-#define CFG_CUSTOM_COLOR_OPTS CFG_COLOR_OPTS(NULL, NULL, NULL)
+#define CFG_CUSTOM_COLOR_OPTS CFG_COLOR_OPTS(NULL, NULL, NULL, NULL)
 
 #define CFG_CUSTOM_MIN_WIDTH_OPT \
     CFG_PTR_CB("min_width", NULL, CFGF_NONE, parse_min_width, free)
@@ -284,7 +294,7 @@ int main(int argc, char *argv[]) {
         CFG_STR("separator", "default", CFGF_NONE),
         CFG_STR("color_separator", "#333333", CFGF_NONE),
         CFG_INT("interval", 1, CFGF_NONE),
-        CFG_COLOR_OPTS("#00FF00", "#FFFF00", "#FF0000"),
+        CFG_COLOR_OPTS("#00FF00", "#FFFF00", "#FF0000", "#0000FF"),
         CFG_END()};
 
     cfg_opt_t run_watch_opts[] = {
@@ -329,6 +339,25 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_MIN_WIDTH_OPT,
         CFG_END()};
 
+    cfg_opt_t kbd_opts[] = {
+        CFG_CUSTOM_ALIGN_OPT,
+        CFG_CUSTOM_COLOR_OPTS,
+        CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_END()};
+
+    cfg_opt_t brightness_opts[] = {
+        CFG_STR("foreground", "#0000FF", CFGF_NONE),
+        CFG_CUSTOM_ALIGN_OPT,
+        CFG_CUSTOM_COLOR_OPTS,
+        CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_END()};
+
+    cfg_opt_t connection_opts[] = {
+        CFG_CUSTOM_ALIGN_OPT,
+        CFG_CUSTOM_COLOR_OPTS,
+        CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_END()};
+
     cfg_opt_t battery_opts[] = {
         CFG_STR("format", "%status %percentage %remaining", CFGF_NONE),
         CFG_STR("format_down", "No battery", CFGF_NONE),
@@ -338,9 +367,9 @@ int main(int argc, char *argv[]) {
         CFG_STR("path", "/sys/class/power_supply/BAT%d/uevent", CFGF_NONE),
         CFG_INT("low_threshold", 30, CFGF_NONE),
         CFG_STR("threshold_type", "time", CFGF_NONE),
-        CFG_BOOL("last_full_capacity", false, CFGF_NONE),
-        CFG_BOOL("integer_battery_capacity", false, CFGF_NONE),
-        CFG_BOOL("hide_seconds", false, CFGF_NONE),
+        CFG_BOOL("last_full_capacity", (cfg_bool_t)false, CFGF_NONE),
+        CFG_BOOL("integer_battery_capacity", (cfg_bool_t)false, CFGF_NONE),
+        CFG_BOOL("hide_seconds", (cfg_bool_t)false, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
@@ -422,6 +451,9 @@ int main(int argc, char *argv[]) {
         CFG_SEC("disk", disk_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("volume", volume_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("ipv6", ipv6_opts, CFGF_NONE),
+        CFG_SEC("kbd", kbd_opts, CFGF_NONE),
+        CFG_SEC("connection", connection_opts, CFGF_NONE),
+        CFG_SEC("brightness", brightness_opts, CFGF_NONE),
         CFG_SEC("time", time_opts, CFGF_NONE),
         CFG_SEC("tztime", tztime_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("ddate", ddate_opts, CFGF_NONE),
@@ -578,7 +610,21 @@ int main(int argc, char *argv[]) {
                 print_ipv6_info(json_gen, buffer, cfg_getstr(sec, "format_up"), cfg_getstr(sec, "format_down"));
                 SEC_CLOSE_MAP;
             }
-
+            CASE_SEC("kbd") {
+                SEC_OPEN_MAP("kbd");
+                print_kbd_info(json_gen, buffer);
+                SEC_CLOSE_MAP;
+            }
+            CASE_SEC("connection") {
+                SEC_OPEN_MAP("connection");
+                print_connection(json_gen, buffer);
+                SEC_CLOSE_MAP;
+            }
+             CASE_SEC("brightness") {
+                SEC_OPEN_MAP("brightness");
+                print_brightness(json_gen, buffer);
+                SEC_CLOSE_MAP;
+            }
             CASE_SEC_TITLE("wireless") {
                 SEC_OPEN_MAP("wireless");
                 const char *interface = NULL;

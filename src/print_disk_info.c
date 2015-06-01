@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <mntent.h>
 #include <stdint.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
@@ -10,8 +11,6 @@
 #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || (__OpenBSD__) || defined(__DragonFly__)
 #include <sys/param.h>
 #include <sys/mount.h>
-#else
-#include <mntent.h>
 #endif
 #include <yajl/yajl_gen.h>
 #include <yajl/yajl_version.h>

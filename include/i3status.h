@@ -1,11 +1,13 @@
 #ifndef _I3STATUS_H
 #define _I3STATUS_H
 
-enum { O_DZEN2,
+enum eoutput_format { O_DZEN2,
        O_XMOBAR,
        O_I3BAR,
        O_TERM,
-       O_NONE } output_format;
+       O_NONE };
+
+extern enum eoutput_format output_format;
 
 #include <stdbool.h>
 #include <confuse.h>
@@ -192,6 +194,7 @@ void print_disk_info(yajl_gen json_gen, char *buffer, const char *path, const ch
 void print_battery_info(yajl_gen json_gen, char *buffer, int number, const char *path, const char *format, const char *format_down, const char *status_chr, const char *status_bat, const char *status_full, int low_threshold, char *threshold_type, bool last_full_capacity, bool integer_battery_capacity, bool hide_seconds);
 void print_time(yajl_gen json_gen, char *buffer, const char *title, const char *format, const char *tz, time_t t);
 void print_ddate(yajl_gen json_gen, char *buffer, const char *format, time_t t);
+// const char *get_ip_addr();
 const char *get_ip_addr(const char *interface);
 void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down);
 void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format, const char *format_down);
