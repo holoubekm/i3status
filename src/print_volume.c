@@ -127,7 +127,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
             walk += strlen("%");
         }
         if (BEGINS_WITH(walk + 1, "volume")) {
-            outwalk += sprintf(outwalk, "%d%%", avg);
+            outwalk += sprintf(outwalk, "%3.0d%%", avg);
             walk += strlen("volume");
         }
     }
