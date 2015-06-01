@@ -39,12 +39,12 @@ void print_connection(yajl_gen json_gen, char *buffer)
     char *outwalk = buffer;
 
     const char* ip;
-    if((ip = get_ip_addr("eno16777736")) != NULL)
+    if((ip = get_ip_addr("enp4s0f2")) != NULL)
     {
         START_COLOR("color_good");
         outwalk += sprintf(outwalk, "%s", ip);
     }
-    else if((ip = get_ip_addr("eno16777736")) != NULL)
+    else if((ip = get_ip_addr("wlp3s0")) != NULL)
     {
         START_COLOR("color_degraded");
         outwalk += sprintf(outwalk, "%s", ip);

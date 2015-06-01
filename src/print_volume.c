@@ -104,8 +104,12 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         if ((err = snd_mixer_selem_get_playback_switch(elem, (snd_mixer_selem_channel_id_t)0, &pbval)) < 0)
             fprintf(stderr, "i3status: ALSA: playback_switch: %s\n", snd_strerror(err));
         if (!pbval) {
-            START_COLOR("color_degraded");
+            START_COLOR("color_bad");
             fmt = fmt_muted;
+        }
+        else
+        {
+            START_COLOR("color_good");
         }
     }
 
@@ -151,8 +155,12 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         return;
 
     if (((vol & 0x7f) == 0) && (((vol >> 8) & 0x7f) == 0)) {
-        START_COLOR("color_degraded");
+        START_COLOR("color_bad");
         pbval = 0;
+    }
+    else
+    {
+        START_COLOR("color_good");
     }
 
     const char *walk = fmt;
@@ -175,7 +183,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
 
 out:
     *outwalk = '\0';
-    if (!pbval)
+    // if (!pbval)
         END_COLOR;
     OUTPUT_FULL_TEXT(buffer);
 }

@@ -93,11 +93,13 @@ int XKeyboard::get_group() const
     return static_cast<int>(xkbState.group);
 }
 
+XKeyboard xkb;
+
 extern "C" void print_kbd_info(yajl_gen json_gen, char *buffer);
 void print_kbd_info(yajl_gen json_gen, char *buffer) 
 {
     const char* layouts[] = { "EN", "CS" };
-    XKeyboard xkb;
+    
 
     int group = xkb.get_group();
     const char* layout = "XX";

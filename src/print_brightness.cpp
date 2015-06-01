@@ -8,6 +8,8 @@
 #include <yajl/yajl_gen.h>
 #include <fstream>
 #include <iostream>
+#include <glob.h>
+
 extern "C" {
     #include "i3status.h"
 }
@@ -31,27 +33,31 @@ void print_brightness(yajl_gen json_gen, char *buffer)
     max_brightness_if.close();
     
     long brightness = -1;
-    fstream brightness_if("/sys/class/backlight/intel_backlight/brightness");
-    if(max_brightness_if.good())
+    ifstream brightness_if("/sys/class/backlight/intel_backlight/brightness");
+    if(brightness_if.good())
     {
         brightness_if >> brightness;
     }
     brightness_if.close();
 
-    const wchar_t delims[] = L"▅▆▁▂▃▄▅▆▇█";
-    int val = (int)((float)brightness * 10 / max_brightness);
-    if(val == 10)
-        val == 9;
+    const char* delims[] = {" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"};
+    int val = (int)((float)brightness * 9 / max_brightness);
+    if(val >= 9)
+        val = 8;
     else if(val < 0)
         val = 0;
 
+    // wchar_t sym = delims[val];
 
-    // cout << max_brightness << endl;
-    // cout << brightness << endl;
+    // cout << (char)sym << endl;
+    // for(int x = 0; x < sizeof(wchar_t); x++)
+    // {
+    //     *outwalk = (delims[val] >> (x*8)) & 0xFF;
+    //     outwalk += 1;
+    // }
 
-    outwalk += sprintf(outwalk, "%c", delims[val]);
-    END_COLOR;
-
+    outwalk += sprintf(outwalk, "%s", delims[val]);
     *outwalk = '\0';
+    END_COLOR;
     OUTPUT_FULL_TEXT(buffer);
 }
