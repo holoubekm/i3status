@@ -40,7 +40,7 @@ static char *apply_volume_format(const char *fmt, char *outwalk, int ivolume) {
             walk += strlen("%");
         }
         if (BEGINS_WITH(walk + 1, "volume")) {
-            outwalk += sprintf(outwalk, "%d%%", ivolume);
+            outwalk += sprintf(outwalk, "%3.0d%%", ivolume);
             walk += strlen("volume");
         }
     }
