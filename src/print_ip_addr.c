@@ -51,7 +51,8 @@ const char *get_ip_addr(const char *interface) {
 
     if (addrp == NULL) {
         freeifaddrs(ifaddr);
-        return (found ? "no IP" : NULL);
+        /* return (found ? "no IP" : NULL); */
+        return NULL;
     }
 
     int ret;
