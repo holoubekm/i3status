@@ -24,6 +24,7 @@ CFLAGS+=-Iinclude
 LIBS+=-lconfuse
 LIBS+=-lyajl
 LIBS+=-lpulse
+LIBS+=-lpthread
 
 VERSION:=$(shell git describe --tags --abbrev=0)
 GIT_VERSION:="$(shell git describe --tags --always) ($(shell git log --pretty=format:%cd --date=short -n1))"

@@ -23,8 +23,6 @@ const char *get_ip_addr(const char *interface) {
     memset(part, 0, sizeof(part));
 
     struct ifaddrs *ifaddr, *addrp;
-    bool found = false;
-
     getifaddrs(&ifaddr);
 
     if (ifaddr == NULL)
@@ -42,7 +40,6 @@ const char *get_ip_addr(const char *interface) {
         /* Check if the interface is down */
         if (strcmp(addrp->ifa_name, interface) != 0)
             continue;
-        found = true;
         if ((addrp->ifa_flags & IFF_RUNNING) == 0) {
             freeifaddrs(ifaddr);
             return NULL;
