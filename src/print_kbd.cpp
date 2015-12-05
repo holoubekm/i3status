@@ -37,6 +37,10 @@ extern "C" {
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 
+#define MAXGROUPLENGTH 256
+#define OUTPUT_LENGTH 3
+#define XKB_CTRLS_MASK (XkbAllControlsMask & ~(XkbInternalModsMask | XkbIgnoreLockModsMask))
+
 using namespace std;
 typedef std::vector<std::string> string_vector;
 
@@ -46,10 +50,13 @@ public:
     Display* _display;
     int _deviceId;
     XkbDescRec* _kbdDescPtr;
+    int _ngroups;
+    char** _groups;
 
     XKeyboard();
     ~XKeyboard();
-    int get_group() const;
+    int get_group_id() const;
+    int get_gr_num(Display *dpy, XkbDescPtr kb);
 };
 
 XKeyboard::XKeyboard()
@@ -76,6 +83,35 @@ XKeyboard::XKeyboard()
     if (_deviceId != XkbUseCoreKbd) {
         _kbdDescPtr->device_spec = _deviceId;
     }
+
+
+    _ngroups = get_gr_num(_display, _kbdDescPtr);
+    _groups = (char**)malloc(sizeof(char*) * _ngroups);
+    for (int i = 0; i < _ngroups; i++)
+        _groups[i] = (char*)malloc(MAXGROUPLENGTH); 
+
+    char *name = NULL;
+
+    if (XkbGetNames(_display, XkbGroupNamesMask, _kbdDescPtr) != Success);
+        // eprint("skb: XkbGetNames() failed");
+  
+    for (int i = 0; i < _ngroups; i++) {
+        if (_kbdDescPtr->names->groups[i])
+            if ((name = XGetAtomName(_display, _kbdDescPtr->names->groups[i])))
+                snprintf(_groups[i], OUTPUT_LENGTH + 1, name);
+    }
+    XkbFreeNames(_kbdDescPtr, XkbGroupNamesMask, 0);
+}
+
+int XKeyboard::get_gr_num(Display *dpy, XkbDescPtr kb) {
+    int rv;
+
+    if (XkbGetControls(dpy, XKB_CTRLS_MASK, kb) != Success);
+        // eprint("skb: XkbGetControls() failed.\n");
+
+    rv = kb->ctrls->num_groups;
+    XkbFreeControls(kb, XKB_CTRLS_MASK, 0);
+    return rv;
 }
 
 XKeyboard::~XKeyboard()
@@ -84,9 +120,13 @@ XKeyboard::~XKeyboard()
         XkbFreeKeyboard(_kbdDescPtr, 0, True);
 
     XCloseDisplay(_display);
+
+    for(int x = 0; x < _ngroups; x++)
+        free(_groups[x]);
+    free(_groups);
 }
 
-int XKeyboard::get_group() const
+int XKeyboard::get_group_id() const
 {
     XkbStateRec xkbState;
     XkbGetState(_display, _deviceId, &xkbState);
@@ -98,13 +138,10 @@ XKeyboard xkb;
 extern "C" void print_kbd_info(yajl_gen json_gen, char *buffer);
 void print_kbd_info(yajl_gen json_gen, char *buffer) 
 {
-    const char* layouts[] = { "EN", "CS" };
-    
-
-    int group = xkb.get_group();
+    int group = xkb.get_group_id();
     const char* layout = "XX";
-    if(group < sizeof(layouts) / sizeof(layouts[0]))
-        layout = layouts[group];
+    if(group < xkb._ngroups)
+        layout = xkb._groups[group];
 
     const char *walk, *last;
     char *outwalk = buffer;

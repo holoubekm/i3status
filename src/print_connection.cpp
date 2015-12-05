@@ -32,25 +32,38 @@ extern "C" {
 
 using namespace std;
 
-extern "C" void print_connection(yajl_gen json_gen, char *buffer);
-void print_connection(yajl_gen json_gen, char *buffer) 
+extern "C" void print_connection(yajl_gen json_gen, cfg_t* cfg, char *buffer);
+void print_connection(yajl_gen json_gen, cfg_t* cfg, char *buffer) 
 {
     const char *walk, *last;
     char *outwalk = buffer;
 
+    int cnt = cfg_size(cfg, "interfaces");
+    int x = 0;
+    bool found = false;
     const char* ip;
-    if((ip = get_ip_addr("enp4s0f2")) != NULL)
-    {
-        START_COLOR("color_good");
-        outwalk += sprintf(outwalk, "%s", ip);
+
+    for(x = 0; x < cnt; x++) {
+        if((ip = get_ip_addr(cfg_getnstr(cfg, "interfaces", x))) != NULL) {
+            found = true;
+            break;
+        }
     }
-    else if((ip = get_ip_addr("wlp3s0")) != NULL)
-    {
-        START_COLOR("color_degraded");
-        outwalk += sprintf(outwalk, "%s", ip);
-    }
-    else
-    {
+
+    if(found) {
+        switch(x) {
+            case 0:
+                START_COLOR("color_good");
+                break;
+            case 1:
+                START_COLOR("color_degraded");
+                break;
+            default:
+                START_COLOR("color_magic");
+                break;
+        }
+        outwalk += sprintf(outwalk, "%s", ip);   
+    } else {
         START_COLOR("color_bad");
         outwalk += sprintf(outwalk, "127.0.0.1");
     }

@@ -40,23 +40,23 @@ void print_brightness(yajl_gen json_gen, char *buffer)
     }
     brightness_if.close();
 
+    const char* used_char = "⬛";
+    const char* free_char = "⬜";
+    const int cnt = 10;
+
     const char* delims[] = {" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"};
-    int val = (int)((float)brightness * 9 / max_brightness);
-    if(val >= 9)
-        val = 8;
+    int val = (int)((float)brightness * (cnt + 1) / max_brightness);
+    if(val > cnt)
+        val = cnt;
     else if(val < 0)
         val = 0;
 
-    // wchar_t sym = delims[val];
+    for(int x = 0; x <= val; x++)
+        outwalk += sprintf(outwalk, "%s", used_char);
 
-    // cout << (char)sym << endl;
-    // for(int x = 0; x < sizeof(wchar_t); x++)
-    // {
-    //     *outwalk = (delims[val] >> (x*8)) & 0xFF;
-    //     outwalk += 1;
-    // }
+    for(int x = val; x < cnt; x++)
+        outwalk += sprintf(outwalk, "%s", free_char);
 
-    outwalk += sprintf(outwalk, "%s", delims[val]);
     *outwalk = '\0';
     END_COLOR;
     OUTPUT_FULL_TEXT(buffer);

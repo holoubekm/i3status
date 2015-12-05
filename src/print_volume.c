@@ -28,22 +28,34 @@
 #include "queue.h"
 
 static char *apply_volume_format(const char *fmt, char *outwalk, int ivolume) {
-    const char *walk = fmt;
 
-    for (; *walk != '\0'; walk++) {
-        if (*walk != '%') {
-            *(outwalk++) = *walk;
-            continue;
-        }
-        if (BEGINS_WITH(walk + 1, "%")) {
-            outwalk += sprintf(outwalk, "%%");
-            walk += strlen("%");
-        }
-        if (BEGINS_WITH(walk + 1, "volume")) {
-            outwalk += sprintf(outwalk, "%3.0d%%", ivolume);
-            walk += strlen("volume");
-        }
+    const char* used_char = "⬛";
+    const char* free_char = "⬜";
+    int cnt = 100;
+    int x;
+    for(x = 0; x < ivolume; x += 10) {
+        outwalk += sprintf(outwalk, "%s", used_char);
     }
+
+    for(; x < cnt; x += 10) 
+        outwalk += sprintf(outwalk, "%s", free_char);
+
+    // const char *walk = fmt;
+
+    // for (; *walk != '\0'; walk++) {
+    //     if (*walk != '%') {
+    //         *(outwalk++) = *walk;
+    //         continue;
+    //     }
+    //     if (BEGINS_WITH(walk + 1, "%")) {
+    //         outwalk += sprintf(outwalk, "%%");
+    //         walk += strlen("%");
+    //     }
+    //     if (BEGINS_WITH(walk + 1, "volume")) {
+    //         outwalk += sprintf(outwalk, "%3.0d%%", ivolume);
+    //         walk += strlen("volume");
+    //     }
+    // }
     return outwalk;
 }
 
