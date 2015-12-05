@@ -38,7 +38,7 @@
 enum eoutput_format output_format;
 
 
-void print_kbd_info(yajl_gen json_gen, char *buffer);
+void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer);
 void print_connection(yajl_gen json_gen, cfg_t* cfg, char *buffer);
 void print_brightness(yajl_gen json_gen, char *buffer);
 
@@ -344,6 +344,7 @@ int main(int argc, char *argv[]) {
 		CFG_END()};
 
 	cfg_opt_t kbd_opts[] = {
+		CFG_STR_LIST("layouts", "{}", CFGF_NONE),
 		CFG_CUSTOM_ALIGN_OPT,
 		CFG_CUSTOM_COLOR_OPTS,
 		CFG_CUSTOM_MIN_WIDTH_OPT,
@@ -628,12 +629,11 @@ int main(int argc, char *argv[]) {
 			}
 			CASE_SEC("kbd") {
 				SEC_OPEN_MAP("kbd");
-				print_kbd_info(json_gen, buffer);
+				print_kbd_info(json_gen, sec, buffer);
 				SEC_CLOSE_MAP;
 			}
 			CASE_SEC("connection") {
 				SEC_OPEN_MAP("connection");
-				const char* aa = "enp4s0f2";
 				print_connection(json_gen, sec, buffer);
 				SEC_CLOSE_MAP;
 			}

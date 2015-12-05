@@ -135,16 +135,17 @@ int XKeyboard::get_group_id() const
 
 XKeyboard xkb;
 
-extern "C" void print_kbd_info(yajl_gen json_gen, char *buffer);
-void print_kbd_info(yajl_gen json_gen, char *buffer) 
+extern "C" void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer);
+void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer) 
 {
+    int cnt = cfg_size(cfg, "layouts");
     int group = xkb.get_group_id();
-    const char* layout = "XX";
-    if(group < xkb._ngroups)
-        layout = xkb._groups[group];
+    
+    const char* layout = "--";
+    if(group >= 0 && group <= cnt)
+        layout = cfg_getnstr(cfg, "layouts", group);
 
-    const char *walk, *last;
-    char *outwalk = buffer;
+    char* outwalk = buffer;
     outwalk += sprintf(outwalk, layout);
     *outwalk = '\0';
     OUTPUT_FULL_TEXT(buffer);
