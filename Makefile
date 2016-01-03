@@ -25,6 +25,7 @@ LIBS+=-lconfuse
 LIBS+=-lyajl
 LIBS+=-lpulse
 LIBS+=-lpthread
+LIBS+=-lm
 
 VERSION:=$(shell git describe --tags --abbrev=0)
 GIT_VERSION:="$(shell git describe --tags --always) ($(shell git log --pretty=format:%cd --date=short -n1))"
@@ -33,7 +34,8 @@ OS:=$(shell uname)
 ifeq ($(OS),Linux)
 CPPFLAGS+=-DLINUX
 CPPFLAGS+=-D_GNU_SOURCE
-LIBS+=-liw
+CFLAGS += $(shell pkg-config --cflags libnl-genl-3.0)
+LIBS += $(shell pkg-config --libs libnl-genl-3.0)
 LIBS+=-lasound
 endif
 
@@ -44,10 +46,6 @@ endif
 ifneq (, $(filter $(OS), DragonFly FreeBSD OpenBSD))
 CFLAGS+=-I/usr/local/include/
 LDFLAGS+=-L/usr/local/lib/
-endif
-
-ifeq ($(OS),OpenBSD)
-LIBS+=-lossaudio
 endif
 
 ifeq ($(OS),NetBSD)
@@ -102,7 +100,7 @@ src/%.o: src/%.c include/i3status.h
 
 
 clean:
-	rm -f *.o *.x src/*.o src/*.x 
+	rm -f *.o *.x src/*.o src/*.x i3status
 
 distclean: clean
 	rm -f i3status man/i3status.1
@@ -123,7 +121,7 @@ install:
 release:
 	[ -f i3status-${VERSION} ] || rm -rf i3status-${VERSION}
 	mkdir i3status-${VERSION}
-	find . -maxdepth 1 -type f \( -regex ".*\.\(c\|conf\|h\)" -or -name "README" -or -name "Makefile" -or -name "LICENSE" -or -name "CHANGELOG" \) -exec cp '{}' i3status-${VERSION} \;
+	find . -maxdepth 1 -type f \( -regex ".*\.\(c\|conf\|h\)" -or -name "README.md" -or -name "Makefile" -or -name "LICENSE" -or -name "CHANGELOG" \) -exec cp '{}' i3status-${VERSION} \;
 	mkdir i3status-${VERSION}/src
 	mkdir i3status-${VERSION}/man
 	find src -maxdepth 1 -type f \( -regex ".*\.\(c\|h\)" \) -exec cp '{}' i3status-${VERSION}/src \;

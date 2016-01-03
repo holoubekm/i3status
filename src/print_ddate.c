@@ -209,7 +209,7 @@ void print_ddate(yajl_gen json_gen, char *buffer, const char *format, time_t t) 
     if ((dt = get_ddate(&current_tm)) == NULL)
         return;
     if (form == NULL)
-        if ((form = (char*)malloc(strlen(format) + 1)) == NULL)
+        if ((form = malloc(strlen(format) + 1)) == NULL)
             return;
     strcpy(form, format);
     outwalk += format_output(outwalk, form, dt);

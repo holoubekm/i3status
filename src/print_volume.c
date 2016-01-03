@@ -21,7 +21,8 @@
 #ifdef __OpenBSD__
 #include <fcntl.h>
 #include <unistd.h>
-#include <soundcard.h>
+#include <sys/audioio.h>
+#include <sys/ioctl.h>
 #endif
 
 #include "i3status.h"
@@ -71,6 +72,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         free(instance);
     }
 
+#ifndef __OpenBSD__
     /* Try PulseAudio first */
 
     /* If the device name has the format "pulse[:N]" where N is the
@@ -118,6 +120,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
     }
 /* If some other device was specified or PulseAudio is not detected,
  * proceed to ALSA / OSS */
+#endif
 
 #ifdef LINUX
     int err;
@@ -173,7 +176,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
     snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
 
     snd_mixer_handle_events(m);
-    snd_mixer_selem_get_playback_volume(elem, (snd_mixer_selem_channel_id_t)0, &val);
+    snd_mixer_selem_get_playback_volume(elem, 0, &val);
     if (max != 100) {
         float avgf = ((float)val / max) * 100;
         avg = (int)avgf;
@@ -183,7 +186,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
 
     /* Check for mute */
     if (snd_mixer_selem_has_playback_switch(elem)) {
-        if ((err = snd_mixer_selem_get_playback_switch(elem, (snd_mixer_selem_channel_id_t)0, &pbval)) < 0)
+        if ((err = snd_mixer_selem_get_playback_switch(elem, 0, &pbval)) < 0)
             fprintf(stderr, "i3status: ALSA: playback_switch: %s\n", snd_strerror(err));
         if (!pbval) {
             START_COLOR("color_bad");
@@ -213,13 +216,77 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         mixerpath = defaultmixer;
 
     if ((mixfd = open(mixerpath, O_RDWR)) < 0) {
+#if defined(__OpenBSD__)
+        warn("audioio: Cannot open mixer");
+#else
         warn("OSS: Cannot open mixer");
+#endif
         goto out;
     }
 
     if (mixer_idx > 0)
         free(mixerpath);
 
+#if defined(__OpenBSD__)
+    int oclass_idx = -1, master_idx = -1, master_mute_idx = -1;
+    mixer_devinfo_t devinfo, devinfo2;
+    mixer_ctrl_t vinfo;
+
+    devinfo.index = 0;
+    while (ioctl(mixfd, AUDIO_MIXER_DEVINFO, &devinfo) >= 0) {
+        if (devinfo.type != AUDIO_MIXER_CLASS) {
+            devinfo.index++;
+            continue;
+        }
+        if (strncmp(devinfo.label.name, AudioCoutputs, MAX_AUDIO_DEV_LEN) == 0)
+            oclass_idx = devinfo.index;
+
+        devinfo.index++;
+    }
+
+    devinfo2.index = 0;
+    while (ioctl(mixfd, AUDIO_MIXER_DEVINFO, &devinfo2) >= 0) {
+        if ((devinfo2.type == AUDIO_MIXER_VALUE) && (devinfo2.mixer_class == oclass_idx) && (strncmp(devinfo2.label.name, AudioNmaster, MAX_AUDIO_DEV_LEN) == 0))
+            master_idx = devinfo2.index;
+
+        if ((devinfo2.type == AUDIO_MIXER_ENUM) && (devinfo2.mixer_class == oclass_idx) && (strncmp(devinfo2.label.name, AudioNmute, MAX_AUDIO_DEV_LEN) == 0))
+            master_mute_idx = devinfo2.index;
+
+        devinfo2.index++;
+    }
+
+    if (master_idx == -1)
+        goto out;
+
+    devinfo.index = master_idx;
+    if (ioctl(mixfd, AUDIO_MIXER_DEVINFO, &devinfo) == -1)
+        goto out;
+
+    vinfo.dev = master_idx;
+    vinfo.type = AUDIO_MIXER_VALUE;
+    if (ioctl(mixfd, AUDIO_MIXER_READ, &vinfo) == -1)
+        goto out;
+
+    if (AUDIO_MAX_GAIN != 100) {
+        float avgf = ((float)vinfo.un.value.level[AUDIO_MIXER_LEVEL_MONO] / AUDIO_MAX_GAIN) * 100;
+        vol = (int)avgf;
+        vol = (avgf - vol < 0.5 ? vol : (vol + 1));
+    } else {
+        vol = (int)vinfo.un.value.level[AUDIO_MIXER_LEVEL_MONO];
+    }
+
+    vinfo.dev = master_mute_idx;
+    vinfo.type = AUDIO_MIXER_ENUM;
+    if (ioctl(mixfd, AUDIO_MIXER_READ, &vinfo) == -1)
+        goto out;
+
+    if (master_mute_idx != -1 && vinfo.un.ord) {
+        START_COLOR("color_degraded");
+        fmt = fmt_muted;
+        pbval = 0;
+    }
+
+#else
     if (ioctl(mixfd, SOUND_MIXER_READ_DEVMASK, &devmask) == -1) {
         warn("OSS: Cannot read mixer information");
         goto out;
@@ -238,6 +305,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         START_COLOR("color_good");
     }
 
+#endif
     outwalk = apply_volume_format(fmt, outwalk, vol & 0x7f);
     close(mixfd);
 #endif
