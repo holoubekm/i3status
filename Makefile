@@ -16,7 +16,7 @@ CFLAGS+=-Wall -Wshadow -Wpointer-arith -Wcast-qual -Wsign-compare
 CFLAGS+=-g
 CFLAGS+=-std=gnu99
 CFLAGS+=-pedantic
-CPPFLAGS+=-DSYSCONFDIR=\"$(SYSCONFDIR)\" 
+CPPFLAGS+=-DSYSCONFDIR=\"$(SYSCONFDIR)\"
 CPPFLAGS+=-lstdc++ 
 CPPFLAGS+=-DVERSION=\"${GIT_VERSION}\"
 CPPFLAGS+=-Iinclude

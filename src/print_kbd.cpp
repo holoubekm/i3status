@@ -1,10 +1,12 @@
 // vim:ts=4:sw=4:expandtab
 // vim:ts=4:sw=4:expandtab
-#include <ctype.h>
-#include <time.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cctype>
+#include <ctime>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
+#include <string>
 #include <yajl/yajl_gen.h>
 
 extern "C" {
@@ -30,10 +32,6 @@ extern "C" {
 #include <sys/envsys.h>
 #endif
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <sstream>
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 

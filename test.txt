@@ -1,0 +1,1042 @@
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:265:56: error: macro "max" passed 3 arguments, but takes just 2
+     max(const _Tp& __a, const _Tp& __b, _Compare __comp)
+                                                        ^
+In file included from src/print_kbd.cpp:11:0:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:219:5: error: expected unqualified-id before ‘const’
+     max(const _Tp& __a, const _Tp& __b)
+     ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:219:5: error: expected ‘)’ before ‘const’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:219:5: error: expected ‘)’ before ‘const’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:219:5: error: expected initializer before ‘const’
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:265:5: error: ‘std::max’ declared as an ‘inline’ variable
+     max(const _Tp& __a, const _Tp& __b, _Compare __comp)
+     ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:268:7: error: expected primary-expression before ‘if’
+       if (__comp(__a, __b))
+       ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:268:7: error: expected ‘}’ before ‘if’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:268:7: error: expected ‘;’ before ‘if’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:270:7: error: expected unqualified-id before ‘return’
+       return __a;
+       ^~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:315:38: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __copy_move<false, false, random_access_iterator_tag>
+                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:315:38: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:315:64: error: template argument 3 is invalid
+     struct __copy_move<false, false, random_access_iterator_tag>
+                                                                ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:334:37: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __copy_move<true, false, random_access_iterator_tag>
+                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:334:37: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:334:63: error: template argument 3 is invalid
+     struct __copy_move<true, false, random_access_iterator_tag>
+                                                               ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:353:39: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __copy_move<_IsMove, true, random_access_iterator_tag>
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:353:39: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:353:65: error: template argument 3 is invalid
+     struct __copy_move<_IsMove, true, random_access_iterator_tag>
+                                                                 ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_OI __copy_move_a(_II, _II, _OI)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:377:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II>::value_type _ValueTypeI;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:377:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II>::value_type _ValueTypeI;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:378:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_OI>::value_type _ValueTypeO;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:378:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_OI>::value_type _ValueTypeO;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:379:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II>::iterator_category _Category;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:379:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II>::iterator_category _Category;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:380:43: error: ‘_ValueTypeI’ does not name a type
+       const bool __simple = (__is_trivial(_ValueTypeI)
+                                           ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:381:26: error: ‘__is_pointer’ was not declared in this scope
+                       && __is_pointer<_II>::__value
+                          ^~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:381:26: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:311:12: note:   ‘std::__is_pointer’
+     struct __is_pointer
+            ^~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:381:42: error: expected primary-expression before ‘>’ token
+                       && __is_pointer<_II>::__value
+                                          ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:381:43: error: ‘::__value’ has not been declared
+                       && __is_pointer<_II>::__value
+                                           ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:382:42: error: expected primary-expression before ‘>’ token
+                       && __is_pointer<_OI>::__value
+                                          ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:382:43: error: ‘::__value’ has not been declared
+                       && __is_pointer<_OI>::__value
+                                           ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:383:12: error: ‘__are_same’ was not declared in this scope
+         && __are_same<_ValueTypeI, _ValueTypeO>::__value);
+            ^~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:383:12: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:95:12: note:   ‘std::__are_same’
+     struct __are_same
+            ^~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:383:23: error: ‘_ValueTypeI’ was not declared in this scope
+         && __are_same<_ValueTypeI, _ValueTypeO>::__value);
+                       ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:385:14: error: ‘__copy_move’ is not a member of ‘std’
+       return std::__copy_move<_IsMove, __simple,
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:385:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:287:12: note:   ‘__copy_move’
+     struct __copy_move
+            ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:386:24: error: ‘_Category’ was not declared in this scope
+                        _Category>::__copy_m(__first, __last, __result);
+                        ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:386:34: error: ‘::__copy_m’ has not been declared
+                        _Category>::__copy_m(__first, __last, __result);
+                                  ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: At global scope:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:37: error: ‘__is_char’ was not declared in this scope
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                     ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:37: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:344:12: note:   ‘std::__is_char’
+     struct __is_char
+            ^~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:53: error: wrong number of template arguments (1, should be 2)
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                     ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:54: error: expected identifier before ‘::’ token
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                      ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: error: explicit qualification in declaration of ‘__value’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:63: error: expected ‘;’ before ‘,’ token
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                               ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:407:37: error: ‘__is_char’ was not declared in this scope
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                     ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:407:37: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:344:12: note:   ‘std::__is_char’
+     struct __is_char
+            ^~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:407:53: error: wrong number of template arguments (1, should be 2)
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                     ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:407:54: error: expected identifier before ‘::’ token
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                      ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:407:56: error: explicit qualification in declaration of ‘__value’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:407:63: error: expected ‘;’ before ‘,’ token
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                               ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:413:37: error: ‘__is_char’ was not declared in this scope
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                     ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:413:37: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:344:12: note:   ‘std::__is_char’
+     struct __is_char
+            ^~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:413:53: error: wrong number of template arguments (1, should be 2)
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                     ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:413:54: error: expected identifier before ‘::’ token
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                      ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:413:56: error: explicit qualification in declaration of ‘__value’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:413:63: error: expected ‘;’ before ‘,’ token
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                               ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_OI __copy_move_a2(_II, _II, _OI)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:422:18: error: ‘__copy_move_a’ is not a member of ‘std’
+       return _OI(std::__copy_move_a<_IsMove>(std::__niter_base(__first),
+                  ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:422:18: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:375:5: note:   ‘__copy_move_a’
+     __copy_move_a(_II __first, _II __last, _OI __result)
+     ^~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_OI copy(_II, _II, _OI)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:454:15: error: ‘__copy_move_a2’ is not a member of ‘std’
+       return (std::__copy_move_a2<__is_move_iterator<_II>::__value>
+               ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:454:15: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:420:5: note:   ‘__copy_move_a2’
+     __copy_move_a2(_II __first, _II __last, _OI __result)
+     ^~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:454:35: error: ‘__is_move_iterator’ was not declared in this scope
+       return (std::__copy_move_a2<__is_move_iterator<_II>::__value>
+                                   ^~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:454:35: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:398:12: note:   ‘std::__is_move_iterator’
+     struct __is_move_iterator
+            ^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:454:57: error: expected primary-expression before ‘>’ token
+       return (std::__copy_move_a2<__is_move_iterator<_II>::__value>
+                                                         ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:454:67: error: missing template arguments before ‘>’ token
+       return (std::__copy_move_a2<__is_move_iterator<_II>::__value>
+                                                                   ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_OI move(_II, _II, _OI)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:487:14: error: ‘__copy_move_a2’ is not a member of ‘std’
+       return std::__copy_move_a2<true>(std::__miter_base(__first),
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:487:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:420:5: note:   ‘__copy_move_a2’
+     __copy_move_a2(_II __first, _II __last, _OI __result)
+     ^~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: At global scope:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:525:47: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __copy_move_backward<false, false, random_access_iterator_tag>
+                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:525:47: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:525:73: error: template argument 3 is invalid
+     struct __copy_move_backward<false, false, random_access_iterator_tag>
+                                                                         ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:540:46: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __copy_move_backward<true, false, random_access_iterator_tag>
+                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:540:46: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:540:72: error: template argument 3 is invalid
+     struct __copy_move_backward<true, false, random_access_iterator_tag>
+                                                                        ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:555:48: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __copy_move_backward<_IsMove, true, random_access_iterator_tag>
+                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:555:48: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:555:74: error: template argument 3 is invalid
+     struct __copy_move_backward<_IsMove, true, random_access_iterator_tag>
+                                                                          ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_BI2 __copy_move_backward_a(_BI1, _BI1, _BI2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:579:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_BI1>::value_type _ValueType1;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:579:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_BI1>::value_type _ValueType1;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:580:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_BI2>::value_type _ValueType2;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:580:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_BI2>::value_type _ValueType2;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:581:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_BI1>::iterator_category _Category;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:581:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_BI1>::iterator_category _Category;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:582:43: error: ‘_ValueType1’ does not name a type
+       const bool __simple = (__is_trivial(_ValueType1)
+                                           ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:583:26: error: ‘__is_pointer’ was not declared in this scope
+                       && __is_pointer<_BI1>::__value
+                          ^~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:583:26: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:311:12: note:   ‘std::__is_pointer’
+     struct __is_pointer
+            ^~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:583:43: error: expected primary-expression before ‘>’ token
+                       && __is_pointer<_BI1>::__value
+                                           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:584:23: error: missing template arguments before ‘&&’ token
+                       && __is_pointer<_BI2>::__value
+                       ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:584:43: error: expected primary-expression before ‘>’ token
+                       && __is_pointer<_BI2>::__value
+                                           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:585:9: error: missing template arguments before ‘&&’ token
+         && __are_same<_ValueType1, _ValueType2>::__value);
+         ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:585:12: error: ‘__are_same’ was not declared in this scope
+         && __are_same<_ValueType1, _ValueType2>::__value);
+            ^~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:585:12: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:95:12: note:   ‘std::__are_same’
+     struct __are_same
+            ^~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:585:23: error: ‘_ValueType1’ was not declared in this scope
+         && __are_same<_ValueType1, _ValueType2>::__value);
+                       ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:587:14: error: ‘__copy_move_backward’ is not a member of ‘std’
+       return std::__copy_move_backward<_IsMove, __simple,
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:587:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:497:12: note:   ‘__copy_move_backward’
+     struct __copy_move_backward
+            ^~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:588:33: error: ‘_Category’ was not declared in this scope
+                                 _Category>::__copy_move_b(__first,
+                                 ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:588:43: error: ‘::__copy_move_b’ has not been declared
+                                 _Category>::__copy_move_b(__first,
+                                           ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_BI2 __copy_move_backward_a2(_BI1, _BI1, _BI2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:597:19: error: ‘__copy_move_backward_a’ is not a member of ‘std’
+       return _BI2(std::__copy_move_backward_a<_IsMove>
+                   ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:597:19: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:577:5: note:   ‘__copy_move_backward_a’
+     __copy_move_backward_a(_BI1 __first, _BI1 __last, _BI2 __result)
+     ^~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_BI2 copy_backward(_BI1, _BI1, _BI2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:632:15: error: ‘__copy_move_backward_a2’ is not a member of ‘std’
+       return (std::__copy_move_backward_a2<__is_move_iterator<_BI1>::__value>
+               ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:632:15: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:595:5: note:   ‘__copy_move_backward_a2’
+     __copy_move_backward_a2(_BI1 __first, _BI1 __last, _BI2 __result)
+     ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:632:44: error: ‘__is_move_iterator’ was not declared in this scope
+       return (std::__copy_move_backward_a2<__is_move_iterator<_BI1>::__value>
+                                            ^~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:632:44: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:398:12: note:   ‘std::__is_move_iterator’
+     struct __is_move_iterator
+            ^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:632:67: error: expected primary-expression before ‘>’ token
+       return (std::__copy_move_backward_a2<__is_move_iterator<_BI1>::__value>
+                                                                   ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:632:77: error: missing template arguments before ‘>’ token
+       return (std::__copy_move_backward_a2<__is_move_iterator<_BI1>::__value>
+                                                                             ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_BI2 move_backward(_BI1, _BI1, _BI2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:668:14: error: ‘__copy_move_backward_a2’ is not a member of ‘std’
+       return std::__copy_move_backward_a2<true>(std::__miter_base(__first),
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:668:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:595:5: note:   ‘__copy_move_backward_a2’
+     __copy_move_backward_a2(_BI1 __first, _BI1 __last, _BI2 __result)
+     ^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: At global scope:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:29: error: ‘__is_scalar’ was not declared in this scope
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, void>::__type
+                             ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:29: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:336:12: note:   ‘std::__is_scalar’
+     struct __is_scalar
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:44: error: wrong number of template arguments (1, should be 2)
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, void>::__type
+                                            ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:45: error: expected identifier before ‘::’ token
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, void>::__type
+                                             ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:47: error: explicit qualification in declaration of ‘__value’
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, void>::__type
+                                               ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:47: error: ‘__value’ declared as an ‘inline’ variable
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:47: error: redeclaration of ‘template<class _ForwardIterator, class _Tp> int __value’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: note: previous declaration ‘template<bool _IsMove, class _CharT> int __value<_IsMove, _CharT>’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:680:54: error: expected ‘;’ before ‘,’ token
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, void>::__type
+                                                      ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:28: error: ‘__is_scalar’ was not declared in this scope
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
+                            ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:28: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:336:12: note:   ‘std::__is_scalar’
+     struct __is_scalar
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:43: error: wrong number of template arguments (1, should be 2)
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
+                                           ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:44: error: expected identifier before ‘::’ token
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
+                                            ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:46: error: explicit qualification in declaration of ‘__value’
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
+                                              ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:46: error: ‘__value’ declared as an ‘inline’ variable
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:46: error: redeclaration of ‘template<class _ForwardIterator, class _Tp> int __value’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: note: previous declaration ‘template<bool _IsMove, class _CharT> int __value<_IsMove, _CharT>’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:690:53: error: expected ‘;’ before ‘,’ token
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, void>::__type
+                                                     ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:28: error: ‘__is_byte’ was not declared in this scope
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
+                            ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:28: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:367:12: note:   ‘std::__is_byte’
+     struct __is_byte
+            ^~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:41: error: wrong number of template arguments (1, should be 2)
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
+                                         ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:42: error: expected identifier before ‘::’ token
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
+                                          ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:44: error: explicit qualification in declaration of ‘__value’
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
+                                            ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:44: error: ‘__value’ declared as an ‘inline’ variable
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:44: error: redeclaration of ‘template<class _Tp> int __value’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: note: previous declaration ‘template<bool _IsMove, class _CharT> int __value<_IsMove, _CharT>’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:702:51: error: expected ‘;’ before ‘,’ token
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, void>::__type
+                                                   ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘void fill(_ForwardIterator, _ForwardIterator, const _Tp&)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:731:7: error: ‘__fill_a’ is not a member of ‘std’
+       std::__fill_a(std::__niter_base(__first), std::__niter_base(__last),
+       ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: At global scope:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:29: error: ‘__is_scalar’ was not declared in this scope
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                             ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:29: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:336:12: note:   ‘std::__is_scalar’
+     struct __is_scalar
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:44: error: wrong number of template arguments (1, should be 2)
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                            ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:45: error: expected identifier before ‘::’ token
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                             ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:47: error: explicit qualification in declaration of ‘__value’
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                               ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:47: error: ‘__value’ declared as an ‘inline’ variable
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:47: error: redeclaration of ‘template<class _OutputIterator, class _Size, class _Tp> int __value’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: note: previous declaration ‘template<bool _IsMove, class _CharT> int __value<_IsMove, _CharT>’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:737:54: error: expected ‘;’ before ‘,’ token
+     __gnu_cxx::__enable_if<!__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                                      ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:28: error: ‘__is_scalar’ was not declared in this scope
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                            ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:28: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:336:12: note:   ‘std::__is_scalar’
+     struct __is_scalar
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:43: error: wrong number of template arguments (1, should be 2)
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                           ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:44: error: expected identifier before ‘::’ token
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                            ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:46: error: explicit qualification in declaration of ‘__value’
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                              ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:46: error: ‘__value’ declared as an ‘inline’ variable
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:46: error: redeclaration of ‘template<class _OutputIterator, class _Size, class _Tp> int __value’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: note: previous declaration ‘template<bool _IsMove, class _CharT> int __value<_IsMove, _CharT>’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:748:53: error: expected ‘;’ before ‘,’ token
+     __gnu_cxx::__enable_if<__is_scalar<_Tp>::__value, _OutputIterator>::__type
+                                                     ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:28: error: ‘__is_byte’ was not declared in this scope
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, _Tp*>::__type
+                            ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:28: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:367:12: note:   ‘std::__is_byte’
+     struct __is_byte
+            ^~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:41: error: wrong number of template arguments (1, should be 2)
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, _Tp*>::__type
+                                         ^
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:62:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/ext/type_traits.h:45:12: note: provided for ‘template<bool <anonymous>, class> struct __gnu_cxx::__enable_if’
+     struct __enable_if
+            ^~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:42: error: expected identifier before ‘::’ token
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, _Tp*>::__type
+                                          ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:44: error: explicit qualification in declaration of ‘__value’
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, _Tp*>::__type
+                                            ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:44: error: ‘__value’ declared as an ‘inline’ variable
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:44: error: redeclaration of ‘template<class _Size, class _Tp> int __value’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:401:56: note: previous declaration ‘template<bool _IsMove, class _CharT> int __value<_IsMove, _CharT>’
+     typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value,
+                                                        ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:760:51: error: expected ‘;’ before ‘,’ token
+     __gnu_cxx::__enable_if<__is_byte<_Tp>::__value, _Tp*>::__type
+                                                   ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_OI fill_n(_OI, _Size, const _Tp&)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:789:18: error: ‘__fill_n_a’ is not a member of ‘std’
+       return _OI(std::__fill_n_a(std::__niter_base(__first), __n, __value));
+                  ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool __equal_aux(_II1, _II1, _II2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:823:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II1>::value_type _ValueType1;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:823:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II1>::value_type _ValueType1;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:824:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II2>::value_type _ValueType2;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:824:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II2>::value_type _ValueType2;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:825:31: error: ‘__is_integer’ was not declared in this scope
+       const bool __simple = ((__is_integer<_ValueType1>::__value
+                               ^~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:825:31: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:127:12: note:   ‘std::__is_integer’
+     struct __is_integer
+            ^~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:825:44: error: ‘_ValueType1’ was not declared in this scope
+       const bool __simple = ((__is_integer<_ValueType1>::__value
+                                            ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:826:10: error: missing template arguments before ‘||’ token
+          || __is_pointer<_ValueType1>::__value)
+          ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:826:13: error: ‘__is_pointer’ was not declared in this scope
+          || __is_pointer<_ValueType1>::__value)
+             ^~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:826:13: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:311:12: note:   ‘std::__is_pointer’
+     struct __is_pointer
+            ^~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:826:47: error: missing template arguments before ‘)’ token
+          || __is_pointer<_ValueType1>::__value)
+                                               ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:827:43: error: expected primary-expression before ‘>’ token
+                       && __is_pointer<_II1>::__value
+                                           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:828:23: error: missing template arguments before ‘&&’ token
+                       && __is_pointer<_II2>::__value
+                       ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:828:43: error: expected primary-expression before ‘>’ token
+                       && __is_pointer<_II2>::__value
+                                           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:829:9: error: missing template arguments before ‘&&’ token
+         && __are_same<_ValueType1, _ValueType2>::__value);
+         ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:829:12: error: ‘__are_same’ was not declared in this scope
+         && __are_same<_ValueType1, _ValueType2>::__value);
+            ^~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:829:12: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:95:12: note:   ‘std::__are_same’
+     struct __are_same
+            ^~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:829:36: error: ‘_ValueType2’ was not declared in this scope
+         && __are_same<_ValueType1, _ValueType2>::__value);
+                                    ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:829:57: error: missing template arguments before ‘)’ token
+         && __are_same<_ValueType1, _ValueType2>::__value);
+                                                         ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:831:14: error: ‘__equal’ is not a member of ‘std’
+       return std::__equal<__simple>::equal(__first1, __last1, __first2);
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:831:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:793:12: note:   ‘__equal’
+     struct __equal
+            ^~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:831:36: error: ‘::equal’ has not been declared
+       return std::__equal<__simple>::equal(__first1, __last1, __first2);
+                                    ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: At global scope:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:849:21: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:849:21: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:849:49: error: ‘random_access_iterator_tag’ was not declared in this scope
+     struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:849:49: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_iterator_base_types.h:103:10: note:   ‘std::random_access_iterator_tag’
+   struct random_access_iterator_tag : public bidirectional_iterator_tag { };
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:849:75: error: template argument 1 is invalid
+     struct __lc_rai<random_access_iterator_tag, random_access_iterator_tag>
+                                                                           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:849:75: error: template argument 2 is invalid
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool __lexicographical_compare_impl(_II1, _II1, _II2, _II2, _Compare)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:875:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II1>::iterator_category _Category1;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:875:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II1>::iterator_category _Category1;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:876:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II2>::iterator_category _Category2;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:876:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II2>::iterator_category _Category2;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:877:20: error: ‘__lc_rai’ in namespace ‘std’ does not name a template type
+       typedef std::__lc_rai<_Category1, _Category2> __rai_type;
+                    ^~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:879:17: error: ‘__rai_type’ has not been declared
+       __last1 = __rai_type::__newlast1(__first1, __last1, __first2, __last2);
+                 ^~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:880:37: error: ‘__rai_type’ has not been declared
+       for (; __first1 != __last1 && __rai_type::__cnd2(__first2, __last2);
+                                     ^~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In static member function ‘static bool __lexicographical_compare<_BoolType>::__lc(_II1, _II1, _II2, _II2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:904:9: error: ‘__lexicographical_compare_impl’ is not a member of ‘std’
+  return std::__lexicographical_compare_impl(__first1, __last1,
+         ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:904:9: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:871:5: note:   ‘__lexicographical_compare_impl’
+     __lexicographical_compare_impl(_II1 __first1, _II1 __last1,
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool __lexicographical_compare_aux(_II1, _II1, _II2, _II2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:931:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II1>::value_type _ValueType1;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:931:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II1>::value_type _ValueType1;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:932:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_II2>::value_type _ValueType2;
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:932:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_II2>::value_type _ValueType2;
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:3: error: ‘__is_byte’ was not declared in this scope
+  (__is_byte<_ValueType1>::__value && __is_byte<_ValueType2>::__value
+   ^~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:3: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:367:12: note:   ‘std::__is_byte’
+     struct __is_byte
+            ^~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:13: error: ‘_ValueType1’ was not declared in this scope
+  (__is_byte<_ValueType1>::__value && __is_byte<_ValueType2>::__value
+             ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:35: error: missing template arguments before ‘&&’ token
+  (__is_byte<_ValueType1>::__value && __is_byte<_ValueType2>::__value
+                                   ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:48: error: ‘_ValueType2’ was not declared in this scope
+  (__is_byte<_ValueType1>::__value && __is_byte<_ValueType2>::__value
+                                                ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:935:3: error: missing template arguments before ‘&&’ token
+   && !__gnu_cxx::__numeric_traits<_ValueType1>::__is_signed
+   ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:935:35: error: the value of ‘_ValueType1’ is not usable in a constant expression
+   && !__gnu_cxx::__numeric_traits<_ValueType1>::__is_signed
+                                   ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:13: note: ‘_ValueType1’ was not declared ‘constexpr’
+  (__is_byte<_ValueType1>::__value && __is_byte<_ValueType2>::__value
+             ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:935:46: error: type/value mismatch at argument 1 in template parameter list for ‘template<class _Value> struct __gnu_cxx::__numeric_traits’
+   && !__gnu_cxx::__numeric_traits<_ValueType1>::__is_signed
+                                              ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:935:46: note:   expected a type, got ‘_ValueType1’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:936:35: error: the value of ‘_ValueType2’ is not usable in a constant expression
+   && !__gnu_cxx::__numeric_traits<_ValueType2>::__is_signed
+                                   ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:934:48: note: ‘_ValueType2’ was not declared ‘constexpr’
+  (__is_byte<_ValueType1>::__value && __is_byte<_ValueType2>::__value
+                                                ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:936:46: error: type/value mismatch at argument 1 in template parameter list for ‘template<class _Value> struct __gnu_cxx::__numeric_traits’
+   && !__gnu_cxx::__numeric_traits<_ValueType2>::__is_signed
+                                              ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:936:46: note:   expected a type, got ‘_ValueType2’
+/usr/include/c++/6.1.1/bits/stl_algobase.h:937:6: error: ‘__is_pointer’ was not declared in this scope
+   && __is_pointer<_II1>::__value
+      ^~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:937:6: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/bits/stl_algobase.h:61:0,
+                 from /usr/include/c++/6.1.1/vector:60,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/cpp_type_traits.h:311:12: note:   ‘std::__is_pointer’
+     struct __is_pointer
+            ^~~~~~~~~~~~
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:937:23: error: expected primary-expression before ‘>’ token
+   && __is_pointer<_II1>::__value
+                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:938:3: error: missing template arguments before ‘&&’ token
+   && __is_pointer<_II2>::__value);
+   ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:938:23: error: expected primary-expression before ‘>’ token
+   && __is_pointer<_II2>::__value);
+                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:938:33: error: missing template arguments before ‘)’ token
+   && __is_pointer<_II2>::__value);
+                                 ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:940:14: error: ‘__lexicographical_compare’ is not a member of ‘std’
+       return std::__lexicographical_compare<__simple>::__lc(__first1, __last1,
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:940:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:892:12: note:   ‘__lexicographical_compare’
+     struct __lexicographical_compare
+            ^~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:940:54: error: ‘::__lc’ has not been declared
+       return std::__lexicographical_compare<__simple>::__lc(__first1, __last1,
+                                                      ^~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_ForwardIterator __lower_bound(_ForwardIterator, _ForwardIterator, const _Tp&, _Compare)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:949:24: error: expected nested-name-specifier before ‘iterator_traits’
+       typedef typename iterator_traits<_ForwardIterator>::difference_type
+                        ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:949:39: error: expected initializer before ‘<’ token
+       typedef typename iterator_traits<_ForwardIterator>::difference_type
+                                       ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:952:7: error: ‘_DistanceType’ was not declared in this scope
+       _DistanceType __len = std::distance(__first, __last);
+       ^~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:954:14: error: ‘__len’ was not declared in this scope
+       while (__len > 0)
+              ^~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:956:18: error: expected ‘;’ before ‘__half’
+    _DistanceType __half = __len >> 1;
+                  ^~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:958:27: error: ‘__half’ was not declared in this scope
+    std::advance(__middle, __half);
+                           ^~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘_ForwardIterator lower_bound(_ForwardIterator, _ForwardIterator, const _Tp&)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:994:14: error: ‘__lower_bound’ is not a member of ‘std’
+       return std::__lower_bound(__first, __last, __val,
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:994:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:946:5: note:   ‘__lower_bound’
+     __lower_bound(_ForwardIterator __first, _ForwardIterator __last,
+     ^~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool equal(_II1, _II1, _II2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1052:14: error: ‘__equal_aux’ is not a member of ‘std’
+       return std::__equal_aux(std::__niter_base(__first1),
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1052:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:821:5: note:   ‘__equal_aux’
+     __equal_aux(_II1 __first1, _II1 __last1, _II2 __first2)
+     ^~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool equal(_II1, _II1, _II2, _II2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1118:22: error: ‘random_access_iterator_tag’ does not name a type
+       using _RATag = random_access_iterator_tag;
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1119:30: error: expected nested-name-specifier before ‘iterator_traits’
+       using _Cat1 = typename iterator_traits<_II1>::iterator_category;
+                              ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1120:30: error: expected nested-name-specifier before ‘iterator_traits’
+       using _Cat2 = typename iterator_traits<_II2>::iterator_category;
+                              ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1121:24: error: ‘__and_’ does not name a type
+       using _RAIters = __and_<is_same<_Cat1, _RATag>, is_same<_Cat2, _RATag>>;
+                        ^~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1122:20: error: there are no arguments to ‘_RAIters’ that depend on a template parameter, so a declaration of ‘_RAIters’ must be available [-fpermissive]
+       if (_RAIters())
+                    ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1122:20: note: (if you use ‘-fpermissive’, G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+In file included from /usr/include/c++/6.1.1/cctype:41:0,
+                 from src/print_kbd.cpp:3:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1128:11: error: ‘equal’ is not a member of ‘std’
+    return _GLIBCXX_STD_A::equal(__first1, __last1, __first2);
+           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1128:11: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1107:5: note:   ‘equal’
+     equal(_II1 __first1, _II1 __last1, _II2 __first2, _II2 __last2)
+     ^~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool equal(_IIter1, _IIter1, _IIter2, _IIter2, _BinaryPredicate)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1165:22: error: ‘random_access_iterator_tag’ does not name a type
+       using _RATag = random_access_iterator_tag;
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1166:30: error: expected nested-name-specifier before ‘iterator_traits’
+       using _Cat1 = typename iterator_traits<_IIter1>::iterator_category;
+                              ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1167:30: error: expected nested-name-specifier before ‘iterator_traits’
+       using _Cat2 = typename iterator_traits<_IIter2>::iterator_category;
+                              ^~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1168:24: error: ‘__and_’ does not name a type
+       using _RAIters = __and_<is_same<_Cat1, _RATag>, is_same<_Cat2, _RATag>>;
+                        ^~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1169:20: error: there are no arguments to ‘_RAIters’ that depend on a template parameter, so a declaration of ‘_RAIters’ must be available [-fpermissive]
+       if (_RAIters())
+                    ^
+In file included from /usr/include/c++/6.1.1/cctype:41:0,
+                 from src/print_kbd.cpp:3:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1175:11: error: ‘equal’ is not a member of ‘std’
+    return _GLIBCXX_STD_A::equal(__first1, __last1, __first2,
+           ^
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1175:11: note: suggested alternative:
+In file included from /usr/include/c++/6.1.1/vector:60:0,
+                 from src/print_kbd.cpp:33:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1156:5: note:   ‘equal’
+     equal(_IIter1 __first1, _IIter1 __last1,
+     ^~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool lexicographical_compare(_II1, _II1, _II2, _II2)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1221:14: error: ‘__lexicographical_compare_aux’ is not a member of ‘std’
+       return std::__lexicographical_compare_aux(std::__niter_base(__first1),
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1221:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:928:5: note:   ‘__lexicographical_compare_aux’
+     __lexicographical_compare_aux(_II1 __first1, _II1 __last1,
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: In function ‘bool lexicographical_compare(_II1, _II1, _II2, _II2, _Compare)’:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1253:14: error: ‘__lexicographical_compare_impl’ is not a member of ‘std’
+       return std::__lexicographical_compare_impl
+              ^~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1253:14: note: suggested alternative:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:871:5: note:   ‘__lexicographical_compare_impl’
+     __lexicographical_compare_impl(_II1 __first1, _II1 __last1,
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h: At global scope:
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1260:5: error: ‘pair’ does not name a type
+     pair<_InputIterator1, _InputIterator2>
+     ^~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1286:12: error: ‘pair’ does not name a type
+     inline pair<_InputIterator1, _InputIterator2>
+            ^~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1320:12: error: ‘pair’ does not name a type
+     inline pair<_InputIterator1, _InputIterator2>
+            ^~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1337:5: error: ‘pair’ does not name a type
+     pair<_InputIterator1, _InputIterator2>
+     ^~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1366:12: error: ‘pair’ does not name a type
+     inline pair<_InputIterator1, _InputIterator2>
+            ^~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1402:12: error: ‘pair’ does not name a type
+     inline pair<_InputIterator1, _InputIterator2>
+            ^~~~
+/usr/include/c++/6.1.1/bits/stl_algobase.h:1419:1: error: expected declaration before ‘}’ token
+ } // namespace std
+ ^
+make: *** [src/print_kbd.x] Error 1

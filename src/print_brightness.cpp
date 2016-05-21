@@ -40,8 +40,10 @@ void print_brightness(yajl_gen json_gen, char *buffer)
     }
     brightness_if.close();
 
-    const char* used_char = "⬛";
-    const char* free_char = "⬜";
+    // const char* used_char = "⬛";
+    const char* used_char = "▮";
+    // const char* free_char = "⬜";
+    const char* free_char = " ";
     const int cnt = 10;
 
     const char* delims[] = {" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"};

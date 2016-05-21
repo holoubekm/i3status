@@ -1,10 +1,10 @@
 // vim:ts=4:sw=4:expandtab
 // vim:ts=4:sw=4:expandtab
-#include <ctype.h>
-#include <time.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cctype>
+#include <ctime>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include <yajl/yajl_gen.h>
 
 
@@ -16,17 +16,10 @@ extern "C" {
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <netdb.h>
 #include <ifaddrs.h>
 #include <net/if.h>
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <sstream>
 #include <X11/Xlib.h>
 #include <X11/XKBlib.h>
 

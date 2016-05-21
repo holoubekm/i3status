@@ -30,8 +30,10 @@
 
 static char *apply_volume_format(const char *fmt, char *outwalk, int ivolume) {
 
-    const char* used_char = "⬛";
-    const char* free_char = "⬜";
+    // const char* used_char = "⬛";
+    const char* used_char = "▮";
+    // const char* free_char = "⬜";
+    const char* free_char = " ";
     int cnt = 100;
     int x;
     for(x = 0; x < ivolume; x += 10) {
