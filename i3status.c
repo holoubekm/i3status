@@ -34,16 +34,6 @@
 
 #include "i3status.h"
 
-
-enum eoutput_format output_format;
-enum emarkup_format markup_format;
-char *pct_mark;
-
-void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer);
-void print_connection(yajl_gen json_gen, cfg_t* cfg, char *buffer);
-void print_brightness(yajl_gen json_gen, char *buffer);
-
-
 #define exit_if_null(pointer, ...) \
     {                              \
         if (pointer == NULL)       \
@@ -64,6 +54,19 @@ void print_brightness(yajl_gen json_gen, char *buffer);
 #define CFG_CUSTOM_MIN_WIDTH_OPT \
     CFG_PTR_CB("min_width", NULL, CFGF_NONE, parse_min_width, free)
 
+#define CFG_CUSTOM_SEPARATOR_OPT \
+    CFG_BOOL("separator", 0, CFGF_NODEFAULT)
+
+#define CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT \
+    CFG_INT("separator_block_width", 0, CFGF_NODEFAULT)
+
+
+
+enum output_format_t output_format;
+enum markup_format_t markup_format;
+char *pct_mark;
+
+
 /* socket file descriptor for general purposes */
 int general_socket;
 
@@ -76,6 +79,7 @@ void **cur_instance;
 void* sig_handler(void *);
 pthread_cond_t i3status_sleep_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t i3status_sleep_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_t sig_thread;
 
 /*
  * Set the exit_upon_signal flag, because one cannot do anything in a safe
@@ -84,20 +88,17 @@ pthread_mutex_t i3status_sleep_mutex = PTHREAD_MUTEX_INITIALIZER;
  * https://www.securecoding.cert.org/confluence/display/seccode/SIG30-C.+Call+only+asynchronous-safe+functions+within+signal+handlers
  *
  */
-// void fatalsig(int signum) {
-//     exit_upon_signal = true;
-// }
+void fatalsig(int signum) {
+    exit_upon_signal = true;
+}
 
 /*
  * Do nothing upon SIGUSR1. Running this signal handler will nevertheless
  * interrupt nanosleep() so that i3status immediately generates new output.
  *
  */
-// void sigusr1(int signum) {
-//         // pthread_mutex_lock(&i3status_sleep_mutex);
-//         pthread_cond_broadcast(&i3status_sleep_cond);
-//         // pthread_mutex_unlock(&i3status_sleep_mutex);
-// }
+void sigusr1(int signum) {
+}
 
 /*
  * Checks if the given path exists by calling stat().
@@ -320,6 +321,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t path_exists_opts[] = {
@@ -329,6 +332,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t wireless_opts[] = {
@@ -337,6 +342,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t ethernet_opts[] = {
@@ -345,6 +352,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t ipv6_opts[] = {
@@ -353,6 +362,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t kbd_opts[] = {
@@ -360,6 +371,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t brightness_opts[] = {
@@ -367,6 +380,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t connection_opts[] = {
@@ -374,6 +389,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t battery_opts[] = {
@@ -381,6 +398,7 @@ int main(int argc, char *argv[]) {
         CFG_STR("format_down", "No battery", CFGF_NONE),
         CFG_STR("status_chr", "CHR", CFGF_NONE),
         CFG_STR("status_bat", "BAT", CFGF_NONE),
+        CFG_STR("status_unk", "UNK", CFGF_NONE),
         CFG_STR("status_full", "FULL", CFGF_NONE),
         CFG_STR("path", "/sys/class/power_supply/BAT%d/uevent", CFGF_NONE),
         CFG_INT("low_threshold", 30, CFGF_NONE),
@@ -391,12 +409,16 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t time_opts[] = {
         CFG_STR("format", "%Y-%m-%d %H:%M:%S", CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t tztime_opts[] = {
@@ -405,12 +427,16 @@ int main(int argc, char *argv[]) {
         CFG_STR("format_time", NULL, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t ddate_opts[] = {
         CFG_STR("format", "%{%a, %b %d%}, %Y%N - %H", CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t load_opts[] = {
@@ -419,12 +445,16 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t usage_opts[] = {
         CFG_STR("format", "%usage", CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t temp_opts[] = {
@@ -434,6 +464,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t disk_opts[] = {
@@ -445,6 +477,8 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t volume_opts[] = {
@@ -456,11 +490,16 @@ int main(int argc, char *argv[]) {
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
+        CFG_CUSTOM_SEPARATOR_OPT,
+        CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
         CFG_END()};
 
     cfg_opt_t opts[] = {
         CFG_STR_LIST("order", "{}", CFGF_NONE),
         CFG_SEC("general", general_opts, CFGF_NONE),
+        CFG_SEC("kbd", kbd_opts, CFGF_NONE),
+        CFG_SEC("connection", connection_opts, CFGF_NONE),
+        CFG_SEC("brightness", brightness_opts, CFGF_NONE),
         CFG_SEC("run_watch", run_watch_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("path_exists", path_exists_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("wireless", wireless_opts, CFGF_TITLE | CFGF_MULTI),
@@ -470,9 +509,6 @@ int main(int argc, char *argv[]) {
         CFG_SEC("disk", disk_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("volume", volume_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("ipv6", ipv6_opts, CFGF_NONE),
-        CFG_SEC("kbd", kbd_opts, CFGF_NONE),
-        CFG_SEC("connection", connection_opts, CFGF_NONE),
-        CFG_SEC("brightness", brightness_opts, CFGF_NONE),
         CFG_SEC("time", time_opts, CFGF_NONE),
         CFG_SEC("tztime", tztime_opts, CFGF_TITLE | CFGF_MULTI),
         CFG_SEC("ddate", ddate_opts, CFGF_NONE),
@@ -488,20 +524,10 @@ int main(int argc, char *argv[]) {
         {"version", no_argument, 0, 'v'},
         {0, 0, 0, 0}};
 
-
-    sigset_t signal_set;
-    pthread_t sig_thread;
-
-    /* block all signals */
-    sigfillset(&signal_set);
-    pthread_sigmask(SIG_BLOCK, &signal_set, NULL);
-    pthread_create(&sig_thread, NULL,  sig_handler, NULL);
-
-
-
     // struct sigaction action;
     // memset(&action, 0, sizeof(struct sigaction));
     // action.sa_handler = fatalsig;
+    // main_thread = pthread_self();
 
     /* Exit upon SIGPIPE because when we have nowhere to write to, gathering system
      * information is pointless. Also exit explicitly on SIGTERM and SIGINT because
@@ -514,6 +540,14 @@ int main(int argc, char *argv[]) {
     // memset(&action, 0, sizeof(struct sigaction));
     // action.sa_handler = sigusr1;
     // sigaction(SIGUSR1, &action, NULL);
+
+    sigset_t signal_set;
+    
+    sigfillset(&signal_set);
+    pthread_sigmask(SIG_BLOCK, &signal_set, NULL);
+    pthread_create(&sig_thread, NULL,  sig_handler, NULL);
+
+
 
     if (setlocale(LC_ALL, "") == NULL)
         die("Could not set locale. Please make sure all your LC_* / LANG settings are correct.");
@@ -627,7 +661,6 @@ int main(int argc, char *argv[]) {
     char buffer[4096];
 
     void **per_instance = calloc(cfg_size(cfg, "order"), sizeof(*per_instance));
-    pthread_mutex_lock(&i3status_sleep_mutex);
 
     while (1) {
         if (exit_upon_signal) {
@@ -653,21 +686,7 @@ int main(int argc, char *argv[]) {
                 print_ipv6_info(json_gen, buffer, cfg_getstr(sec, "format_up"), cfg_getstr(sec, "format_down"));
                 SEC_CLOSE_MAP;
             }
-            CASE_SEC("kbd") {
-                SEC_OPEN_MAP("kbd");
-                print_kbd_info(json_gen, sec, buffer);
-                SEC_CLOSE_MAP;
-            }
-            CASE_SEC("connection") {
-                SEC_OPEN_MAP("connection");
-                print_connection(json_gen, sec, buffer);
-                SEC_CLOSE_MAP;
-            }
-             CASE_SEC("brightness") {
-                SEC_OPEN_MAP("brightness");
-                print_brightness(json_gen, buffer);
-                SEC_CLOSE_MAP;
-            }
+
             CASE_SEC_TITLE("wireless") {
                 SEC_OPEN_MAP("wireless");
                 const char *interface = NULL;
@@ -692,7 +711,25 @@ int main(int argc, char *argv[]) {
 
             CASE_SEC_TITLE("battery") {
                 SEC_OPEN_MAP("battery");
-                print_battery_info(json_gen, buffer, atoi(title), cfg_getstr(sec, "path"), cfg_getstr(sec, "format"), cfg_getstr(sec, "format_down"), cfg_getstr(sec, "status_chr"), cfg_getstr(sec, "status_bat"), cfg_getstr(sec, "status_full"), cfg_getint(sec, "low_threshold"), cfg_getstr(sec, "threshold_type"), cfg_getbool(sec, "last_full_capacity"), cfg_getbool(sec, "integer_battery_capacity"), cfg_getbool(sec, "hide_seconds"));
+                print_battery_info(json_gen, buffer, atoi(title), cfg_getstr(sec, "path"), cfg_getstr(sec, "format"), cfg_getstr(sec, "format_down"), cfg_getstr(sec, "status_chr"), cfg_getstr(sec, "status_bat"), cfg_getstr(sec, "status_unk"), cfg_getstr(sec, "status_full"), cfg_getint(sec, "low_threshold"), cfg_getstr(sec, "threshold_type"), cfg_getbool(sec, "last_full_capacity"), cfg_getbool(sec, "integer_battery_capacity"), cfg_getbool(sec, "hide_seconds"));
+                SEC_CLOSE_MAP;
+            }
+
+            CASE_SEC("kbd") {
+                SEC_OPEN_MAP("kbd");
+                print_kbd_info(json_gen, sec, buffer);
+                SEC_CLOSE_MAP;
+            }
+
+            CASE_SEC("connection") {
+                SEC_OPEN_MAP("connection");
+                print_connection(json_gen, sec, buffer);
+                SEC_CLOSE_MAP;
+            }
+
+            CASE_SEC("brightness") {
+                SEC_OPEN_MAP("brightness");
+                print_brightness(json_gen, buffer);
                 SEC_CLOSE_MAP;
             }
 
@@ -776,6 +813,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
         fflush(stdout);
 
+
         /* To provide updates on every full second (as good as possible)
          * we don’t use sleep(interval) but we sleep until the next second.
          * We also align to 60 seconds modulo interval such
@@ -793,6 +831,17 @@ int main(int argc, char *argv[]) {
         /* Sleep to absolute time 'ts', unless the condition
          * 'i3status_sleep_cond' is signaled from another thread */
         pthread_cond_timedwait(&i3status_sleep_cond, &i3status_sleep_mutex, &ts);
+
+
+        //  To provide updates on every full second (as good as possible)
+        //  * we don’t use sleep(interval) but we sleep until the next
+        //  * second (with microsecond precision) plus (interval-1)
+        //  * seconds. We also align to 60 seconds modulo interval such
+        //  * that we start with :00 on every new minute. 
+        // struct timeval current_timeval;
+        // gettimeofday(&current_timeval, NULL);
+        // struct timespec ts = {interval - 1 - (current_timeval.tv_sec % interval), (10e5 - current_timeval.tv_usec) * 1000};
+        // nanosleep(&ts, NULL);
     }
 }
 

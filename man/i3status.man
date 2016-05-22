@@ -74,8 +74,9 @@ ethernet eth0 {
 battery 0 {
         format = "%status %percentage %remaining %emptytime"
         format_down = "No battery"
-        status_chr = "⚇ CHR"
-        status_bat = "⚡ BAT"
+        status_chr = "⚡ CHR"
+        status_bat = "🔋 BAT"
+        status_unk = "? UNK"
         status_full = "☻ FULL"
         path = "/sys/class/power_supply/BAT%d/uevent"
         low_threshold = 10
@@ -315,7 +316,7 @@ network interface found on the system (excluding devices starting with "lo").
 
 === Battery
 
-Gets the status (charging, discharging, running), percentage, remaining
+Gets the status (charging, discharging, unknown, full), percentage, remaining
 time and power consumption (in Watts) of the given battery and when it's
 estimated to be empty. If you want to use the last full capacity instead of the
 design capacity (when using the design capacity, it may happen that your
@@ -339,10 +340,10 @@ colored red. The low_threshold type can be of threshold_type "time" or
 
 Optionally custom strings including any UTF-8 symbols can be used for different
 battery states. This makes it possible to display individual symbols
-for each state (charging, discharging, full)
+for each state (charging, discharging, unknown, full)
 Of course it will also work with special iconic fonts, such as FontAwesome.
-If any of this special status strings is omitted, the default (CHR, BAT, FULL)
-is used.
+If any of these special status strings are omitted, the default (CHR, BAT, UNK,
+FULL) is used.
 
 *Example order*: +battery 0+
 
@@ -350,9 +351,11 @@ is used.
 
 *Example format_down*: +No battery+
 
-*Example status_chr*: +⚇ CHR+
+*Example status_chr*: +⚡ CHR+
 
-*Example status_bat*: +⚡ BAT+
+*Example status_bat*: +🔋 BAT+
+
+*Example status_unk*: +? UNK+
 
 *Example status_full*: +☻ FULL+
 
@@ -513,6 +516,15 @@ min_width::
 	set a sensible minimum width regardless of which font you are using, and at
 	what particular size. Please note that a number enclosed with quotes will
 	still be treated as a number.
+separator::
+	A boolean value which specifies whether a separator line should be drawn
+	after this block. The default is true, meaning the separator line will be
+	drawn. Note that if you disable the separator line, there will still be a
+	gap after the block, unless you also use separator_block_width.
+separator_block_width::
+	The amount of pixels to leave blank after the block. In the middle of this
+	gap, a separator symbol will be drawn unless separator is disabled. This is
+	why the specified width should leave enough space for the separator symbol.
 
 *Example configuration*:
 -------------------------------------------------------------
@@ -520,6 +532,8 @@ disk "/" {
     format = "%avail"
     align = "left"
     min_width = 100
+    separator = false
+    separator_block_width = 1
 }
 -------------------------------------------------------------
 
@@ -602,7 +616,7 @@ Put that in some script, say +.bin/my_i3status.sh+ and execute that instead of i
 
 Note that if you want to use the JSON output format (with colors in i3bar), you
 need to use a slightly more complex wrapper script. There are examples in the
-contrib/ folder, see http://code.i3wm.org/i3status/tree/contrib
+contrib/ folder, see http://code.i3wm.org/i3status/tree/master/contrib
 
 == SIGNALS
 

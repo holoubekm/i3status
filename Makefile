@@ -17,15 +17,14 @@ CFLAGS+=-g
 CFLAGS+=-std=gnu99
 CFLAGS+=-pedantic
 CPPFLAGS+=-DSYSCONFDIR=\"$(SYSCONFDIR)\"
-CPPFLAGS+=-lstdc++ 
 CPPFLAGS+=-DVERSION=\"${GIT_VERSION}\"
-CPPFLAGS+=-Iinclude
 CFLAGS+=-Iinclude
 LIBS+=-lconfuse
 LIBS+=-lyajl
 LIBS+=-lpulse
-LIBS+=-lpthread
 LIBS+=-lm
+LIBS+=-lX11
+LIBS+=-lpthread
 
 VERSION:=$(shell git describe --tags --abbrev=0)
 GIT_VERSION:="$(shell git describe --tags --always) ($(shell git log --pretty=format:%cd --date=short -n1))"
@@ -70,34 +69,36 @@ CFLAGS+=$(EXTRA_CFLAGS)
 # YAJL_MAJOR from that file to decide which code path should be used.
 CFLAGS += -idirafter yajl-fallback
 
-COBJS:=$(wildcard src/*.c *.c)
-COBJS:=$(COBJS:.c=.o)
+OBJS:=$(wildcard src/*.c *.c)
+OBJS:=$(OBJS:.c=.o)
+
 CPPFILES:=$(wildcard src/*.cpp)
 CPPOBJS:=$(CPPFILES:.cpp=.o)
 CPPXS:=$(CPPFILES:.cpp=.x)
 
-all: i3status manpage
+ifeq ($(OS),OpenBSD)
+OBJS:=$(filter-out src/pulse.o, $(OBJS))
+LIBS:=$(filter-out -lpulse, $(LIBS))
+endif
 
-i3status:  ${COBJS} ${CPPXS}
-	g++ $(LDFLAGS) -o $@  $(COBJS) $(CPPOBJS) $(LIBS) -lX11
-	@echo " LD $@"
+src/%.o: src/%.c include/i3status.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+	@echo " CC $<"
 
 src/%.x: src/%.cpp include/i3status.h
 	g++ $(CPPFLAGS) -c -o $@ $<
 	cp $@ $(@:.x=.o)
 	@echo " CC $<"
 
-
-src/%.o: src/%.c include/i3status.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
-	@echo " CC $<"
-
 %.o: %.c include/%.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 	@echo " CC $<"
 
+all: i3status manpage
 
-
+i3status: ${OBJS} ${CPPXS}
+	g++ $(LDFLAGS) -o $@ $^ $(LIBS)
+	@echo " LD $@"
 
 clean:
 	rm -f *.o *.x src/*.o src/*.x i3status

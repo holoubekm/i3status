@@ -2,12 +2,12 @@
 .\"     Title: i3status
 .\"    Author: [see the "AUTHORS" section]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 05/21/2016
+.\"      Date: 05/22/2016
 .\"    Manual: i3 Manual
 .\"    Source: i3status v2.10
 .\"  Language: English
 .\"
-.TH "I3STATUS" "1" "05/21/2016" "i3status v2\&.10" "i3 Manual"
+.TH "I3STATUS" "1" "05/22/2016" "i3status v2\&.10" "i3 Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -128,8 +128,9 @@ ethernet eth0 {
 battery 0 {
         format = "%status %percentage %remaining %emptytime"
         format_down = "No battery"
-        status_chr = "⚇ CHR"
-        status_bat = "⚡ BAT"
+        status_chr = "⚡ CHR"
+        status_bat = "🔋 BAT"
+        status_unk = "? UNK"
         status_full = "☻ FULL"
         path = "/sys/class/power_supply/BAT%d/uevent"
         low_threshold = 10
@@ -336,7 +337,7 @@ The special interface name _first_ will be replaced by the first non\-wireless n
 \fBExample format\fR: E: %ip (%speed)
 .SS "Battery"
 .sp
-Gets the status (charging, discharging, running), percentage, remaining time and power consumption (in Watts) of the given battery and when it\(cqs estimated to be empty\&. If you want to use the last full capacity instead of the design capacity (when using the design capacity, it may happen that your battery is at 23% when fully charged because it\(cqs old\&. In general, I want to see it this way, because it tells me how worn off my battery is\&.), just specify last_full_capacity = true\&. You can hide seconds in the remaining time and empty time estimations by setting hide_seconds = true\&.
+Gets the status (charging, discharging, unknown, full), percentage, remaining time and power consumption (in Watts) of the given battery and when it\(cqs estimated to be empty\&. If you want to use the last full capacity instead of the design capacity (when using the design capacity, it may happen that your battery is at 23% when fully charged because it\(cqs old\&. In general, I want to see it this way, because it tells me how worn off my battery is\&.), just specify last_full_capacity = true\&. You can hide seconds in the remaining time and empty time estimations by setting hide_seconds = true\&.
 .sp
 If you want the battery percentage to be shown without decimals, add integer_battery_capacity = true\&.
 .sp
@@ -344,7 +345,7 @@ If your battery is represented in a non\-standard path in /sys, be sure to modif
 .sp
 It is possible to define a low_threshold that causes the battery text to be colored red\&. The low_threshold type can be of threshold_type "time" or "percentage"\&. So, if you configure low_threshold to 10 and threshold_type to "time", and your battery lasts another 9 minutes, it will be colored red\&.
 .sp
-Optionally custom strings including any UTF\-8 symbols can be used for different battery states\&. This makes it possible to display individual symbols for each state (charging, discharging, full) Of course it will also work with special iconic fonts, such as FontAwesome\&. If any of this special status strings is omitted, the default (CHR, BAT, FULL) is used\&.
+Optionally custom strings including any UTF\-8 symbols can be used for different battery states\&. This makes it possible to display individual symbols for each state (charging, discharging, unknown, full) Of course it will also work with special iconic fonts, such as FontAwesome\&. If any of these special status strings are omitted, the default (CHR, BAT, UNK, FULL) is used\&.
 .sp
 \fBExample order\fR: battery 0
 .sp
@@ -352,9 +353,11 @@ Optionally custom strings including any UTF\-8 symbols can be used for different
 .sp
 \fBExample format_down\fR: No battery
 .sp
-\fBExample status_chr\fR: ⚇ CHR
+\fBExample status_chr\fR: ⚡ CHR
 .sp
-\fBExample status_bat\fR: ⚡ BAT
+\fBExample status_bat\fR: 🔋 BAT
+.sp
+\fBExample status_unk\fR: ? UNK
 .sp
 \fBExample status_full\fR: ☻ FULL
 .sp
@@ -517,6 +520,16 @@ min_width
 .RS 4
 The minimum width (in pixels) the module should occupy\&. If the module takes less space than the specified size, the block will be padded to the left and/or the right side, according to the defined alignment policy\&. This is useful when you want to prevent the whole status line from shifting when values take more or less space between each iteration\&. The option can also be a string\&. In this case, the width of the given text determines the minimum width of the block\&. This is useful when you want to set a sensible minimum width regardless of which font you are using, and at what particular size\&. Please note that a number enclosed with quotes will still be treated as a number\&.
 .RE
+.PP
+separator
+.RS 4
+A boolean value which specifies whether a separator line should be drawn after this block\&. The default is true, meaning the separator line will be drawn\&. Note that if you disable the separator line, there will still be a gap after the block, unless you also use separator_block_width\&.
+.RE
+.PP
+separator_block_width
+.RS 4
+The amount of pixels to leave blank after the block\&. In the middle of this gap, a separator symbol will be drawn unless separator is disabled\&. This is why the specified width should leave enough space for the separator symbol\&.
+.RE
 .sp
 \fBExample configuration\fR:
 .sp
@@ -528,6 +541,8 @@ disk "/" {
     format = "%avail"
     align = "left"
     min_width = 100
+    separator = false
+    separator_block_width = 1
 }
 .fi
 .if n \{\
@@ -600,7 +615,7 @@ done
 .sp
 Put that in some script, say \&.bin/my_i3status\&.sh and execute that instead of i3status\&.
 .sp
-Note that if you want to use the JSON output format (with colors in i3bar), you need to use a slightly more complex wrapper script\&. There are examples in the contrib/ folder, see http://code\&.i3wm\&.org/i3status/tree/contrib
+Note that if you want to use the JSON output format (with colors in i3bar), you need to use a slightly more complex wrapper script\&. There are examples in the contrib/ folder, see http://code\&.i3wm\&.org/i3status/tree/master/contrib
 .SH "SIGNALS"
 .sp
 When receiving SIGUSR1, i3status\(cqs nanosleep() will be interrupted and thus you will force an update\&. You can use killall \-USR1 i3status to force an update after changing the system volume, for example\&.

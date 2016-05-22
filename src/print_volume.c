@@ -29,6 +29,23 @@
 #include "queue.h"
 
 static char *apply_volume_format(const char *fmt, char *outwalk, int ivolume) {
+    // const char *walk = fmt;
+
+    // for (; *walk != '\0'; walk++) {
+    //     if (*walk != '%') {
+    //         *(outwalk++) = *walk;
+    //         continue;
+    //     }
+    //     if (BEGINS_WITH(walk + 1, "%")) {
+    //         outwalk += sprintf(outwalk, "%s", pct_mark);
+    //         walk += strlen("%");
+    //     }
+    //     if (BEGINS_WITH(walk + 1, "volume")) {
+    //         outwalk += sprintf(outwalk, "%d%s", ivolume, pct_mark);
+    //         walk += strlen("volume");
+    //     }
+    // }
+    // return outwalk;
 
     // const char* used_char = "⬛";
     const char* used_char = "▮";
@@ -43,22 +60,6 @@ static char *apply_volume_format(const char *fmt, char *outwalk, int ivolume) {
     for(; x < cnt; x += 10) 
         outwalk += sprintf(outwalk, "%s", free_char);
 
-    // const char *walk = fmt;
-
-    // for (; *walk != '\0'; walk++) {
-    //     if (*walk != '%') {
-    //         *(outwalk++) = *walk;
-    //         continue;
-    //     }
-    //     if (BEGINS_WITH(walk + 1, "%")) {
-    //         outwalk += sprintf(outwalk, "%%");
-    //         walk += strlen("%");
-    //     }
-    //     if (BEGINS_WITH(walk + 1, "volume")) {
-    //         outwalk += sprintf(outwalk, "%3.0d%%", ivolume);
-    //         walk += strlen("volume");
-    //     }
-    // }
     return outwalk;
 }
 
@@ -112,7 +113,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
             }
             else
                 START_COLOR("color_good");
-
+            
             outwalk = apply_volume_format(muted ? fmt_muted : fmt,
                                           outwalk,
                                           ivolume);

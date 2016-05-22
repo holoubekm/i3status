@@ -10,7 +10,7 @@
 #include <yajl/yajl_gen.h>
 
 extern "C" {
-    #include "i3status.h"
+    #include "../include/i3status.h"
 }
 
 

@@ -9,7 +9,7 @@
 
 
 extern "C" {
-    #include "i3status.h"
+    #include "../include/i3status.h"
 }
 
 #include <sys/types.h>

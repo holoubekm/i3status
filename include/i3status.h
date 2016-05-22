@@ -1,20 +1,18 @@
 #ifndef _I3STATUS_H
 #define _I3STATUS_H
 
-enum eoutput_format { O_DZEN2,
+enum output_format_t { O_DZEN2,
        O_XMOBAR,
        O_I3BAR,
        O_LEMONBAR,
        O_TERM,
        O_NONE };
 
-extern enum eoutput_format output_format;
-
-enum emarkup_format { M_PANGO,
+enum markup_format_t { M_PANGO,
        M_NONE };
 
-extern enum emarkup_format markup_format;
-
+extern enum output_format_t output_format;
+extern enum markup_format_t markup_format;
 extern char *pct_mark;
 
 #include <stdbool.h>
@@ -104,32 +102,40 @@ extern char *pct_mark;
         }                                                                              \
     } while (0)
 
-#define SEC_CLOSE_MAP                                                                                    \
-    do {                                                                                                 \
-        if (output_format == O_I3BAR) {                                                                  \
-            char *_align = cfg_getstr(sec, "align");                                                     \
-            if (_align) {                                                                                \
-                yajl_gen_string(json_gen, (const unsigned char *) "align", strlen("align"));             \
-                yajl_gen_string(json_gen, (const unsigned char *)_align, strlen(_align));                \
-            }                                                                                            \
-            struct min_width *_width = cfg_getptr(sec, "min_width");                                     \
-            if (_width) {                                                                                \
-                /* if the value can be parsed as a number, we use the numerical value */                 \
-                if (_width->num > 0) {                                                                   \
-                    yajl_gen_string(json_gen, (const unsigned char *) "min_width", strlen("min_width")); \
-                    yajl_gen_integer(json_gen, _width->num);                                             \
-                } else {                                                                                 \
-                    yajl_gen_string(json_gen, (const unsigned char *) "min_width", strlen("min_width")); \
-                    yajl_gen_string(json_gen, (const unsigned char *)_width->str, strlen(_width->str));  \
-                }                                                                                        \
-            }                                                                                            \
-            const char *_sep = cfg_getstr(cfg_general, "separator");                                     \
-            if (strlen(_sep) == 0) {                                                                     \
-                yajl_gen_string(json_gen, (const unsigned char *) "separator", strlen("separator"));     \
-                yajl_gen_bool(json_gen, false);                                                          \
-            }                                                                                            \
-            yajl_gen_map_close(json_gen);                                                                \
-        }                                                                                                \
+#define SEC_CLOSE_MAP                                                                                                        \
+    do {                                                                                                                     \
+        if (output_format == O_I3BAR) {                                                                                      \
+            char *_align = cfg_getstr(sec, "align");                                                                         \
+            if (_align) {                                                                                                    \
+                yajl_gen_string(json_gen, (const unsigned char *) "align", strlen("align"));                                 \
+                yajl_gen_string(json_gen, (const unsigned char *)_align, strlen(_align));                                    \
+            }                                                                                                                \
+            struct min_width *_width = cfg_getptr(sec, "min_width");                                                         \
+            if (_width) {                                                                                                    \
+                /* if the value can be parsed as a number, we use the numerical value */                                     \
+                if (_width->num > 0) {                                                                                       \
+                    yajl_gen_string(json_gen, (const unsigned char *) "min_width", strlen("min_width"));                     \
+                    yajl_gen_integer(json_gen, _width->num);                                                                 \
+                } else {                                                                                                     \
+                    yajl_gen_string(json_gen, (const unsigned char *) "min_width", strlen("min_width"));                     \
+                    yajl_gen_string(json_gen, (const unsigned char *)_width->str, strlen(_width->str));                      \
+                }                                                                                                            \
+            }                                                                                                                \
+            if (cfg_size(sec, "separator") > 0) {                                                                            \
+                yajl_gen_string(json_gen, (const unsigned char *) "separator", strlen("separator"));                         \
+                yajl_gen_bool(json_gen, cfg_getbool(sec, "separator"));                                                      \
+            }                                                                                                                \
+            if (cfg_size(sec, "separator_block_width") > 0) {                                                                \
+                yajl_gen_string(json_gen, (const unsigned char *) "separator_block_width", strlen("separator_block_width")); \
+                yajl_gen_integer(json_gen, cfg_getint(sec, "separator_block_width"));                                        \
+            }                                                                                                                \
+            const char *_sep = cfg_getstr(cfg_general, "separator");                                                         \
+            if (strlen(_sep) == 0) {                                                                                         \
+                yajl_gen_string(json_gen, (const unsigned char *) "separator", strlen("separator"));                         \
+                yajl_gen_bool(json_gen, false);                                                                              \
+            }                                                                                                                \
+            yajl_gen_map_close(json_gen);                                                                                    \
+        }                                                                                                                    \
     } while (0)
 
 #define START_COLOR(colorstr)                                                                \
@@ -166,6 +172,7 @@ extern char *pct_mark;
 
 typedef enum { CS_DISCHARGING,
                CS_CHARGING,
+               CS_UNKNOWN,
                CS_FULL } charging_status_t;
 
 /*
@@ -203,10 +210,9 @@ const char *first_eth_interface(const net_type_t type);
 
 void print_ipv6_info(yajl_gen json_gen, char *buffer, const char *format_up, const char *format_down);
 void print_disk_info(yajl_gen json_gen, char *buffer, const char *path, const char *format, const char *format_not_mounted, const char *prefix_type, const char *threshold_type, const double low_threshold);
-void print_battery_info(yajl_gen json_gen, char *buffer, int number, const char *path, const char *format, const char *format_down, const char *status_chr, const char *status_bat, const char *status_full, int low_threshold, char *threshold_type, bool last_full_capacity, bool integer_battery_capacity, bool hide_seconds);
+void print_battery_info(yajl_gen json_gen, char *buffer, int number, const char *path, const char *format, const char *format_down, const char *status_chr, const char *status_bat, const char *status_unk, const char *status_full, int low_threshold, char *threshold_type, bool last_full_capacity, bool integer_battery_capacity, bool hide_seconds);
 void print_time(yajl_gen json_gen, char *buffer, const char *title, const char *format, const char *tz, const char *format_time, time_t t);
 void print_ddate(yajl_gen json_gen, char *buffer, const char *format, time_t t);
-// const char *get_ip_addr();
 const char *get_ip_addr(const char *interface);
 void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down);
 void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format, const char *format_down);
@@ -220,6 +226,19 @@ bool process_runs(const char *path);
 int volume_pulseaudio(uint32_t sink_idx);
 bool pulse_initialize(void);
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer);
+    void print_connection(yajl_gen json_gen, cfg_t* cfg, char *buffer);
+    void print_brightness(yajl_gen json_gen, char *buffer);
+
+#ifdef __cplusplus
+}
+#endif
+
 /* socket file descriptor for general purposes */
 extern int general_socket;
 
@@ -227,7 +246,5 @@ extern cfg_t *cfg, *cfg_general, *cfg_section;
 
 extern void **cur_instance;
 
-extern pthread_cond_t i3status_sleep_cond;
-extern pthread_mutex_t i3status_sleep_mutex;
-
+extern pthread_t sig_thread;
 #endif

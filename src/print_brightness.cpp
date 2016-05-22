@@ -11,7 +11,7 @@
 #include <glob.h>
 
 extern "C" {
-    #include "i3status.h"
+    #include "../include/i3status.h"
 }
 
 using namespace std;
