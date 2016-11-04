@@ -115,7 +115,7 @@ static void *scalloc(size_t size) {
     return result;
 }
 
-static char *sstrdup(const char *str) {
+char *sstrdup(const char *str) {
     char *result = strdup(str);
     exit_if_null(result, "Error: out of memory (strdup())\n");
     return result;
@@ -240,12 +240,7 @@ static char *resolve_tilde(const char *path) {
 static char *get_config_path(void) {
     char *xdg_config_home, *xdg_config_dirs, *config_path;
 
-    /* 1: check the traditional path under the home directory */
-    config_path = resolve_tilde("~/.i3status.conf");
-    if (path_exists(config_path))
-        return config_path;
-
-    /* 2: check for $XDG_CONFIG_HOME/i3status/config */
+    /* 1: check for $XDG_CONFIG_HOME/i3status/config */
     if ((xdg_config_home = getenv("XDG_CONFIG_HOME")) == NULL)
         xdg_config_home = "~/.config";
 
@@ -258,15 +253,14 @@ static char *get_config_path(void) {
         return config_path;
     free(config_path);
 
-    /* 3: check the traditional path under /etc */
-    config_path = SYSCONFDIR "/i3status.conf";
-    if (path_exists(config_path))
-        return sstrdup(config_path);
-
-    /* 4: check for $XDG_CONFIG_DIRS/i3status/config */
+    /* 2: check for $XDG_CONFIG_DIRS/i3status/config */
     if ((xdg_config_dirs = getenv("XDG_CONFIG_DIRS")) == NULL)
         xdg_config_dirs = "/etc/xdg";
 
+    /* 3: check the traditional path under the home directory */
+    config_path = resolve_tilde("~/.i3status.conf");
+    if (path_exists(config_path))
+        return config_path;
     char *buf = strdup(xdg_config_dirs);
     char *tok = strtok(buf, ":");
     while (tok != NULL) {
@@ -282,6 +276,11 @@ static char *get_config_path(void) {
         tok = strtok(NULL, ":");
     }
     free(buf);
+
+    /* 4: check the traditional path under /etc */
+    config_path = SYSCONFDIR "/i3status.conf";
+    if (path_exists(config_path))
+        return sstrdup(config_path);
 
     die("Unable to find the configuration file (looked at "
         "~/.i3status.conf, $XDG_CONFIG_HOME/i3status/config, "
@@ -424,6 +423,7 @@ int main(int argc, char *argv[]) {
     cfg_opt_t tztime_opts[] = {
         CFG_STR("format", "%Y-%m-%d %H:%M:%S %Z", CFGF_NONE),
         CFG_STR("timezone", "", CFGF_NONE),
+        CFG_STR("locale", "", CFGF_NONE),
         CFG_STR("format_time", NULL, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_MIN_WIDTH_OPT,
@@ -451,7 +451,10 @@ int main(int argc, char *argv[]) {
 
     cfg_opt_t usage_opts[] = {
         CFG_STR("format", "%usage", CFGF_NONE),
+        CFG_FLOAT("max_threshold", 95, CFGF_NONE),
+        CFG_FLOAT("degraded_threshold", 90, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
+        CFG_CUSTOM_COLOR_OPTS,
         CFG_CUSTOM_MIN_WIDTH_OPT,
         CFG_CUSTOM_SEPARATOR_OPT,
         CFG_CUSTOM_SEP_BLOCK_WIDTH_OPT,
@@ -711,7 +714,7 @@ int main(int argc, char *argv[]) {
 
             CASE_SEC_TITLE("battery") {
                 SEC_OPEN_MAP("battery");
-                print_battery_info(json_gen, buffer, atoi(title), cfg_getstr(sec, "path"), cfg_getstr(sec, "format"), cfg_getstr(sec, "format_down"), cfg_getstr(sec, "status_chr"), cfg_getstr(sec, "status_bat"), cfg_getstr(sec, "status_unk"), cfg_getstr(sec, "status_full"), cfg_getint(sec, "low_threshold"), cfg_getstr(sec, "threshold_type"), cfg_getbool(sec, "last_full_capacity"), cfg_getbool(sec, "integer_battery_capacity"), cfg_getbool(sec, "hide_seconds"));
+                print_battery_info(json_gen, buffer, (strcasecmp(title, "all") == 0 ? -1 : atoi(title)), cfg_getstr(sec, "path"), cfg_getstr(sec, "format"), cfg_getstr(sec, "format_down"), cfg_getstr(sec, "status_chr"), cfg_getstr(sec, "status_bat"), cfg_getstr(sec, "status_unk"), cfg_getstr(sec, "status_full"), cfg_getint(sec, "low_threshold"), cfg_getstr(sec, "threshold_type"), cfg_getbool(sec, "last_full_capacity"), cfg_getbool(sec, "integer_battery_capacity"), cfg_getbool(sec, "hide_seconds"));
                 SEC_CLOSE_MAP;
             }
 
@@ -759,13 +762,13 @@ int main(int argc, char *argv[]) {
 
             CASE_SEC("time") {
                 SEC_OPEN_MAP("time");
-                print_time(json_gen, buffer, NULL, cfg_getstr(sec, "format"), NULL, NULL, tv.tv_sec);
+                print_time(json_gen, buffer, NULL, cfg_getstr(sec, "format"), NULL, NULL, NULL, tv.tv_sec);
                 SEC_CLOSE_MAP;
             }
 
             CASE_SEC_TITLE("tztime") {
                 SEC_OPEN_MAP("tztime");
-                print_time(json_gen, buffer, title, cfg_getstr(sec, "format"), cfg_getstr(sec, "timezone"), cfg_getstr(sec, "format_time"), tv.tv_sec);
+                print_time(json_gen, buffer, title, cfg_getstr(sec, "format"), cfg_getstr(sec, "timezone"), cfg_getstr(sec, "locale"), cfg_getstr(sec, "format_time"), tv.tv_sec);
                 SEC_CLOSE_MAP;
             }
 
@@ -793,7 +796,7 @@ int main(int argc, char *argv[]) {
 
             CASE_SEC("cpu_usage") {
                 SEC_OPEN_MAP("cpu_usage");
-                print_cpu_usage(json_gen, buffer, cfg_getstr(sec, "format"));
+                print_cpu_usage(json_gen, buffer, cfg_getstr(sec, "format"), cfg_getfloat(sec, "max_threshold"), cfg_getfloat(sec, "degraded_threshold"));
                 SEC_CLOSE_MAP;
             }
         }
