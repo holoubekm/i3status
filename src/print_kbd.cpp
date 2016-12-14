@@ -136,15 +136,27 @@ XKeyboard xkb;
 extern "C" void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer);
 void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer) 
 {
-    int cnt = cfg_size(cfg, "layouts");
-    int group = xkb.get_group_id();
+    // int cnt = cfg_size(cfg, "layouts");
+    // int group = xkb.get_group_id();
     
-    const char* layout = "--";
-    if(group >= 0 && group <= cnt)
-        layout = cfg_getnstr(cfg, "layouts", group);
+    // const char* layout = "--";
+    // if(group >= 0 && group <= cnt)
+        // layout = cfg_getnstr(cfg, "layouts", group);
+
+    #define PATH "/tmp/pwld.out"
+    char buf[8] = {0};
+    strcpy(buf, "--");
+
+    FILE* input;
+    input = fopen(PATH, "r");
+    if(input) {
+        auto result = fread (buf, sizeof(char), 2, input);
+        if(result == 2) {
+        }
+    }
 
     char* outwalk = buffer;
-    outwalk += sprintf(outwalk, layout);
+    outwalk += sprintf(outwalk, buf);
     *outwalk = '\0';
     OUTPUT_FULL_TEXT(buffer);
 }
