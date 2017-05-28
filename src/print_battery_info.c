@@ -139,9 +139,13 @@ static bool slurp_battery_info(struct battery_info *batt_info, yajl_gen json_gen
         if (BEGINS_WITH(last, "POWER_SUPPLY_ENERGY_NOW=")) {
             watt_as_unit = true;
             batt_info->remaining = atoi(walk + 1);
+            batt_info->percentage_remaining = -1;
         } else if (BEGINS_WITH(last, "POWER_SUPPLY_CHARGE_NOW=")) {
             watt_as_unit = false;
             batt_info->remaining = atoi(walk + 1);
+            batt_info->percentage_remaining = -1;
+        } else if (BEGINS_WITH(last, "POWER_SUPPLY_CAPACITY=") && batt_info->remaining == -1) {
+            batt_info->percentage_remaining = atoi(walk + 1);
         } else if (BEGINS_WITH(last, "POWER_SUPPLY_CURRENT_NOW="))
             batt_info->present_rate = abs(atoi(walk + 1));
         else if (BEGINS_WITH(last, "POWER_SUPPLY_VOLTAGE_NOW="))
@@ -483,7 +487,7 @@ void print_battery_info(yajl_gen json_gen, char *buffer, int number, const char 
     /* These OSes report battery stats in whole percent. */
     integer_battery_capacity = true;
 #endif
-#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__) || defined(__OpenBSD__)
     /* These OSes report battery time in minutes. */
     hide_seconds = true;
 #endif

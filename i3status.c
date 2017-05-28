@@ -71,6 +71,7 @@ char *pct_mark;
 int general_socket;
 
 static bool exit_upon_signal = false;
+static bool run_once = false;
 
 cfg_t *cfg, *cfg_general, *cfg_section;
 
@@ -80,6 +81,11 @@ void* sig_handler(void *);
 pthread_cond_t i3status_sleep_cond = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t i3status_sleep_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_t sig_thread;
+
+// markup_format_t markup_format;
+// output_format_t output_format;
+
+char *pct_mark;
 
 /*
  * Set the exit_upon_signal flag, because one cannot do anything in a safe
@@ -441,6 +447,7 @@ int main(int argc, char *argv[]) {
 
     cfg_opt_t load_opts[] = {
         CFG_STR("format", "%1min %5min %15min", CFGF_NONE),
+        CFG_STR("format_above_threshold", NULL, CFGF_NONE),
         CFG_FLOAT("max_threshold", 5, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
         CFG_CUSTOM_COLOR_OPTS,
@@ -451,6 +458,9 @@ int main(int argc, char *argv[]) {
 
     cfg_opt_t usage_opts[] = {
         CFG_STR("format", "%usage", CFGF_NONE),
+        CFG_STR("format_above_threshold", NULL, CFGF_NONE),
+        CFG_STR("format_above_degraded_threshold", NULL, CFGF_NONE),
+        CFG_STR("path", "/proc/stat", CFGF_NONE),
         CFG_FLOAT("max_threshold", 95, CFGF_NONE),
         CFG_FLOAT("degraded_threshold", 90, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
@@ -462,6 +472,7 @@ int main(int argc, char *argv[]) {
 
     cfg_opt_t temp_opts[] = {
         CFG_STR("format", "%degrees C", CFGF_NONE),
+        CFG_STR("format_above_threshold", NULL, CFGF_NONE),
         CFG_STR("path", NULL, CFGF_NONE),
         CFG_INT("max_threshold", 75, CFGF_NONE),
         CFG_CUSTOM_ALIGN_OPT,
@@ -473,6 +484,7 @@ int main(int argc, char *argv[]) {
 
     cfg_opt_t disk_opts[] = {
         CFG_STR("format", "%free", CFGF_NONE),
+        CFG_STR("format_below_threshold", NULL, CFGF_NONE),
         CFG_STR("format_not_mounted", NULL, CFGF_NONE),
         CFG_STR("prefix_type", "binary", CFGF_NONE),
         CFG_STR("threshold_type", "percentage_avail", CFGF_NONE),
@@ -520,11 +532,12 @@ int main(int argc, char *argv[]) {
         CFG_END()};
 
     char *configfile = NULL;
-    int o, option_index = 0;
+    int opt, option_index = 0;
     struct option long_options[] = {
         {"config", required_argument, 0, 'c'},
         {"help", no_argument, 0, 'h'},
         {"version", no_argument, 0, 'v'},
+        {"run-once", no_argument, 0, 0},
         {0, 0, 0, 0}};
 
     // struct sigaction action;
@@ -555,18 +568,28 @@ int main(int argc, char *argv[]) {
     if (setlocale(LC_ALL, "") == NULL)
         die("Could not set locale. Please make sure all your LC_* / LANG settings are correct.");
 
-    while ((o = getopt_long(argc, argv, "c:hv", long_options, &option_index)) != -1)
-        if ((char)o == 'c')
-            configfile = optarg;
-        else if ((char)o == 'h') {
-            printf("i3status " VERSION " © 2008 Michael Stapelberg and contributors\n"
-                   "Syntax: %s [-c <configfile>] [-h] [-v]\n",
-                   argv[0]);
-            return 0;
-        } else if ((char)o == 'v') {
-            printf("i3status " VERSION " © 2008 Michael Stapelberg and contributors\n");
-            return 0;
+    while ((opt = getopt_long(argc, argv, "c:hv", long_options, &option_index)) != -1) {
+        switch (opt) {
+            case 'c':
+                configfile = optarg;
+                break;
+            case 'h':
+                printf("i3status " VERSION " © 2008 Michael Stapelberg and contributors\n"
+                       "Syntax: %s [-c <configfile>] [-h] [-v]\n",
+                       argv[0]);
+                return 0;
+                break;
+            case 'v':
+                printf("i3status " VERSION " © 2008 Michael Stapelberg and contributors\n");
+                return 0;
+                break;
+            case 0:
+                if (strcmp(long_options[option_index].name, "run-once") == 0) {
+                    run_once = true;
+                }
+                break;
         }
+    }
 
     if (configfile == NULL)
         configfile = get_config_path();
@@ -750,13 +773,13 @@ int main(int argc, char *argv[]) {
 
             CASE_SEC_TITLE("disk") {
                 SEC_OPEN_MAP("disk_info");
-                print_disk_info(json_gen, buffer, title, cfg_getstr(sec, "format"), cfg_getstr(sec, "format_not_mounted"), cfg_getstr(sec, "prefix_type"), cfg_getstr(sec, "threshold_type"), cfg_getfloat(sec, "low_threshold"));
+                print_disk_info(json_gen, buffer, title, cfg_getstr(sec, "format"), cfg_getstr(sec, "format_below_threshold"), cfg_getstr(sec, "format_not_mounted"), cfg_getstr(sec, "prefix_type"), cfg_getstr(sec, "threshold_type"), cfg_getfloat(sec, "low_threshold"));
                 SEC_CLOSE_MAP;
             }
 
             CASE_SEC("load") {
                 SEC_OPEN_MAP("load");
-                print_load(json_gen, buffer, cfg_getstr(sec, "format"), cfg_getfloat(sec, "max_threshold"));
+                print_load(json_gen, buffer, cfg_getstr(sec, "format"), cfg_getstr(sec, "format_above_threshold"), cfg_getfloat(sec, "max_threshold"));
                 SEC_CLOSE_MAP;
             }
 
@@ -790,13 +813,13 @@ int main(int argc, char *argv[]) {
 
             CASE_SEC_TITLE("cpu_temperature") {
                 SEC_OPEN_MAP("cpu_temperature");
-                print_cpu_temperature_info(json_gen, buffer, atoi(title), cfg_getstr(sec, "path"), cfg_getstr(sec, "format"), cfg_getint(sec, "max_threshold"));
+                print_cpu_temperature_info(json_gen, buffer, atoi(title), cfg_getstr(sec, "path"), cfg_getstr(sec, "format"), cfg_getstr(sec, "format_above_threshold"), cfg_getint(sec, "max_threshold"));
                 SEC_CLOSE_MAP;
             }
 
             CASE_SEC("cpu_usage") {
                 SEC_OPEN_MAP("cpu_usage");
-                print_cpu_usage(json_gen, buffer, cfg_getstr(sec, "format"), cfg_getfloat(sec, "max_threshold"), cfg_getfloat(sec, "degraded_threshold"));
+                print_cpu_usage(json_gen, buffer, cfg_getstr(sec, "format"), cfg_getstr(sec, "format_above_threshold"), cfg_getstr(sec, "format_above_degraded_threshold"), cfg_getstr(sec, "path"), cfg_getfloat(sec, "max_threshold"), cfg_getfloat(sec, "degraded_threshold"));
                 SEC_CLOSE_MAP;
             }
         }
@@ -816,6 +839,9 @@ int main(int argc, char *argv[]) {
         printf("\n");
         fflush(stdout);
 
+        if (run_once) {
+            break;
+        }
 
         /* To provide updates on every full second (as good as possible)
          * we don’t use sleep(interval) but we sleep until the next second.
