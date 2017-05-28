@@ -114,6 +114,7 @@ static bool slurp_battery_info(struct battery_info *batt_info, yajl_gen json_gen
 
 #if defined(LINUX)
     char buf[1024];
+    memset(buf, 0, 1024);
     const char *walk, *last;
     bool watt_as_unit = false;
     int voltage = -1;
