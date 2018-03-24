@@ -37,7 +37,12 @@ void print_connection(yajl_gen json_gen, cfg_t* cfg, char *buffer)
     const char* ip;
 
     for(x = 0; x < cnt; x++) {
-        if((ip = get_ip_addr(cfg_getnstr(cfg, "interfaces", x))) != NULL) {
+        if((ip = sstrdup(get_ip_addr(cfg_getnstr(cfg, "interfaces", x), AF_INET))) != NULL) {
+            found = true;
+            break;
+        }
+
+        if((ip = sstrdup(get_ip_addr(cfg_getnstr(cfg, "interfaces", x), AF_INET6))) != NULL) {
             found = true;
             break;
         }

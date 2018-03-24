@@ -103,7 +103,7 @@ src/%.x: src/%.cpp include/i3status.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 	@echo " CC $<"
 
-all: i3status manpage
+all: i3status
 
 i3status: ${OBJS} ${CPPXS}
 	g++ $(LDFLAGS) -o $@ $^ $(LIBS)
