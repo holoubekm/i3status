@@ -49,7 +49,10 @@ static char *apply_volume_format(const char *fmt, char *outwalk, int ivolume) {
     // return outwalk;
 
     // const char* used_char = "⬛";
-    const char* used_char = "▮";
+    const char* used_char = "•";
+    // const char* used_char = "⬛";
+    // ↯↯☀✸✷✹✺⬤⬛
+
     // const char* free_char = "⬜";
     const char* free_char = " ";
     int cnt = 100;
@@ -92,7 +95,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
         int ivolume = DECOMPOSE_VOLUME(cvolume);
         bool muted = DECOMPOSE_MUTED(cvolume);
         if (muted) {
-            START_COLOR("color_alsa");
+            START_COLOR("color_bad");
             pbval = 0;
         }
         else
