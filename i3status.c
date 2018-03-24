@@ -122,6 +122,9 @@ static void *scalloc(size_t size) {
 }
 
 char *sstrdup(const char *str) {
+    if (str == NULL) {
+        return NULL;
+    }
     char *result = strdup(str);
     exit_if_null(result, "Error: out of memory (strdup())\n");
     return result;
@@ -677,6 +680,11 @@ int main(int argc, char *argv[]) {
         die("Could not create socket\n");
 
     int interval = cfg_getint(cfg_general, "interval");
+    if (interval <= 0) {
+        die("Invalid interval attribute found in section %s, line %d: %d\n"
+            "Expected positive integer\n",
+            cfg_general->name, cfg_general->line, interval);
+    }
 
     /* One memory page which each plugin can use to buffer output.
      * Even though it’s unclean, we just assume that the user will not
