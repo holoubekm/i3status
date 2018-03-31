@@ -17,8 +17,8 @@ The following modules were added:
 
 Added support for one more color used when audio is muted.
 
-**Please not this implementation is done for my purposes and may not (certainly is not) be portable. Event 
-building this fork may require some changes.
+**Please note this implementation is done for my purposes and may not (certainly is not) be portable. Even 
+building this fork may require some changes.**
 
 Added new dependencies:
 *`-lX11`
