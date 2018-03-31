@@ -1,4 +1,29 @@
-# i3status 
+# i3status - asynchronous version
+
+## Changes over the i3/i3status
+
+Almost completely asynchronous - the main thread sleeps indefinitely and updates UI only when necessary.
+
+User can emit the SIGUSR1 signal or use one of the predefined modules implementing synchronization.
+
+The following modules were modified:
+* Print disk info 
+* Current volume - added support for progress bar
+
+The following modules were added:
+* LCD brightness
+* Network connection with priorities and colors (Ethernet > WiFi > Loopback)
+* Current keyboard layout module - pwld daemon
+
+Added support for one more color used when audio is muted.
+
+**Please not this implementation is done for my purposes and may not (certainly is not) be portable. Event 
+building this fork may require some changes.
+
+Added new dependencies:
+*`-lX11`
+*`-lboost_filesystem`
+*`-lboost_system`
 
 ## Description
 
