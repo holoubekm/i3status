@@ -21,9 +21,9 @@ Added support for one more color used when audio is muted.
 building this fork may require some changes.**
 
 Added new dependencies:
-*`-lX11`
-*`-lboost_filesystem`
-*`-lboost_system`
+  * `-lX11`
+  * `-lboost_filesystem`
+  * `-lboost_system`
 
 ## Description
 
