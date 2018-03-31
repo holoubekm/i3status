@@ -28,6 +28,8 @@ LIBS+=-lpulse
 LIBS+=-lm
 LIBS+=-lX11
 LIBS+=-lpthread
+LIBS+=-lboost_filesystem
+LIBS+=-lboost_system
 
 ifeq ($(wildcard .git),)
   # not in git repository
@@ -81,7 +83,7 @@ CFLAGS += -idirafter yajl-fallback
 OBJS:=$(sort $(wildcard src/*.c *.c))
 OBJS:=$(OBJS:.c=.o)
 
-CPPFILES:=$(wildcard src/*.cpp)
+CPPFILES:=$(wildcard src/*.cpp src/inotify-cpp/*.cpp)
 CPPOBJS:=$(CPPFILES:.cpp=.o)
 CPPXS:=$(CPPFILES:.cpp=.x)
 
@@ -110,7 +112,7 @@ i3status: ${OBJS} ${CPPXS}
 	@echo " LD $@"
 
 clean:
-	rm -f *.o *.x src/*.o src/*.x i3status
+	rm -f *.o *.x src/*.o src/*.x i3status src/inotify-cpp/*.x src/inotify-cpp/*.o
 
 distclean: clean
 	rm -f i3status man/i3status.1

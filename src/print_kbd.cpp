@@ -86,13 +86,13 @@ XKeyboard::XKeyboard()
     _ngroups = get_gr_num(_display, _kbdDescPtr);
     _groups = (char**)malloc(sizeof(char*) * _ngroups);
     for (int i = 0; i < _ngroups; i++)
-        _groups[i] = (char*)malloc(MAXGROUPLENGTH); 
+        _groups[i] = (char*)malloc(MAXGROUPLENGTH);
 
     char *name = NULL;
 
     if (XkbGetNames(_display, XkbGroupNamesMask, _kbdDescPtr) != Success);
         // eprint("skb: XkbGetNames() failed");
-  
+
     for (int i = 0; i < _ngroups; i++) {
         if (_kbdDescPtr->names->groups[i])
             if ((name = XGetAtomName(_display, _kbdDescPtr->names->groups[i])))
@@ -134,11 +134,11 @@ int XKeyboard::get_group_id() const
 XKeyboard xkb;
 
 extern "C" void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer);
-void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer) 
+void print_kbd_info(yajl_gen json_gen, cfg_t* cfg, char *buffer)
 {
     // int cnt = cfg_size(cfg, "layouts");
     // int group = xkb.get_group_id();
-    
+
     // const char* layout = "--";
     // if(group >= 0 && group <= cnt)
         // layout = cfg_getnstr(cfg, "layouts", group);

@@ -10,15 +10,66 @@
 #include <iostream>
 #include <glob.h>
 
+#include <signal.h>
+#include "inotify-cpp/NotifierBuilder.h"
+
 extern "C" {
     #include "../include/i3status.h"
 }
 
 using namespace std;
+using namespace inotify;
+
+void* watchdog_handler(void* arg) {
+
+    auto notifier = BuildNotifier();
+    long last_brightness = -1;
+
+    auto handleNotification = [&](Notification notification) {
+        long brightness = -1;
+        ifstream brightness_if("/sys/class/backlight/intel_backlight/brightness");
+        if(brightness_if.good())
+        {
+            brightness_if >> brightness;
+        }
+        brightness_if.close();
+        if(abs(brightness - last_brightness) > 5) {
+            last_brightness = brightness;
+            pthread_kill(sig_thread, SIGUSR1);
+        }
+    };
+
+    auto handleUnexpectedNotification = [](Notification notification) {
+  };
+
+
+        notifier.watchPathRecursively("/sys/class/backlight/intel_backlight/brightness")
+        // .ignoreFileOnce("fileIgnoredOnce")
+        .ignoreFile("fileIgnored")
+        .onEvents({Event::modify}, handleNotification)
+        .onUnexpectedEvent(handleUnexpectedNotification);
+
+    while(true) {
+        notifier.run();
+    }
+}
+
+void init_watchdog() {
+    static int initialized = 0;
+    if(initialized)
+        return;
+    initialized = 1;
+
+    pthread_t watchdog_thread;
+    pthread_create(&watchdog_thread, NULL,  watchdog_handler, NULL);
+}
+
 
 extern "C" void print_brightness(yajl_gen json_gen, char *buffer);
 void print_brightness(yajl_gen json_gen, char *buffer)
 {
+    init_watchdog();
+
     const char *walk, *last;
     char *outwalk = buffer;
 
@@ -31,7 +82,7 @@ void print_brightness(yajl_gen json_gen, char *buffer)
         max_brightness_if >> max_brightness;
     }
     max_brightness_if.close();
-    
+
     long brightness = -1;
     ifstream brightness_if("/sys/class/backlight/intel_backlight/brightness");
     if(brightness_if.good())

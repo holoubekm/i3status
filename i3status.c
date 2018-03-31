@@ -561,7 +561,7 @@ int main(int argc, char *argv[]) {
     // sigaction(SIGUSR1, &action, NULL);
 
     sigset_t signal_set;
-    
+
     sigfillset(&signal_set);
     pthread_sigmask(SIG_BLOCK, &signal_set, NULL);
     pthread_create(&sig_thread, NULL,  sig_handler, NULL);
@@ -874,7 +874,7 @@ int main(int argc, char *argv[]) {
         //  * we don’t use sleep(interval) but we sleep until the next
         //  * second (with microsecond precision) plus (interval-1)
         //  * seconds. We also align to 60 seconds modulo interval such
-        //  * that we start with :00 on every new minute. 
+        //  * that we start with :00 on every new minute.
         // struct timeval current_timeval;
         // gettimeofday(&current_timeval, NULL);
         // struct timespec ts = {interval - 1 - (current_timeval.tv_sec % interval), (10e5 - current_timeval.tv_usec) * 1000};

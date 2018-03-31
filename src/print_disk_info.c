@@ -145,15 +145,16 @@ void print_disk_info(yajl_gen json_gen, char *buffer, const char *path, const ch
         if (strlen(sanitized) > 1 && sanitized[strlen(sanitized) - 1] == '/')
             sanitized[strlen(sanitized) - 1] = '\0';
         FILE *mntentfile = setmntent("/etc/mtab", "r");
-        struct mntent *m;
-
-        while ((m = getmntent(mntentfile)) != NULL) {
-            if (strcmp(m->mnt_dir, sanitized) == 0) {
-                mounted = true;
-                break;
+        if(mntentfile != NULL) {
+            struct mntent *m;
+            while ((m = getmntent(mntentfile)) != NULL) {
+                if (strcmp(m->mnt_dir, sanitized) == 0) {
+                    mounted = true;
+                    break;
+                }
             }
+            endmntent(mntentfile);
         }
-        endmntent(mntentfile);
         free(sanitized);
     }
 #endif
